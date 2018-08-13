@@ -1,0 +1,17 @@
+.all-font(@font-family, @font-size, @color, @letter-spacing) {
+    font-family: @font-family;
+    font-size: @font-size;
+    color: @color;
+    letter-spacing: @letter-spacing;
+}
+.bold-title {
+    font-weight: bold;
+    .all-font(Microsoft YaHei, 20px, #494949, 0);
+}
+.rank-num(@color) {
+    font-style: italic;
+    .all-font(Microsoft YaHei, 24px, @color, 0);
+}
+.rank-score {
+    .all-font(Microsoft YaHei, 24px, #F7BA2A, 0);
+}

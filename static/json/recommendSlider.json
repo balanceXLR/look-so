@@ -1,0 +1,20 @@
+{
+    "recommendSlider": [
+        {
+            "movieId": 1,
+            "movieCover": "/static/background/bg1.png"
+        },
+        {
+            "movieId": 2,
+            "movieCover": "/static/background/bg1.png"
+        },
+        {
+            "movieId": 3,
+            "movieCover": "/static/background/bg1.png"
+        },
+        {
+            "movieId": 4,
+            "movieCover": "/static/background/bg1.png"
+        }
+    ]
+}

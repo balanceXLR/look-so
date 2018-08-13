@@ -1,0 +1,60 @@
+{
+     "recommendMovies" : [
+         {
+             "movieSort": "热门",
+             "movieId": 1,
+             "movieName": "我不是药神",
+             "movieCover": "/static/cover/cover1.png",
+             "reviewScore": 10
+         },
+         {
+            "movieSort": "国语",
+            "movieId": 1,
+            "movieName": "我不是药神",
+            "movieCover": "/static/cover/cover1.png",
+            "reviewScore": 10
+        },
+        {
+            "movieSort": "喜剧",
+            "movieId": 1,
+            "movieName": "我不是药神",
+            "movieCover": "/static/cover/cover1.png",
+            "reviewScore": 10
+        },
+        {
+            "movieSort": "热门",
+            "movieId": 1,
+            "movieName": "我不是药神",
+            "movieCover": "/static/cover/cover1.png",
+            "reviewScore": 10
+        },
+        {
+            "movieSort": "热门",
+            "movieId": 1,
+            "movieName": "我不是药神",
+            "movieCover": "/static/cover/cover1.png",
+            "reviewScore": 10
+        },
+        {
+            "movieSort": "热门",
+            "movieId": 1,
+            "movieName": "我不是药神",
+            "movieCover": "/static/cover/cover1.png",
+            "reviewScore": 10
+        },
+        {
+            "movieSort": "热门",
+            "movieId": 1,
+            "movieName": "我不是药神",
+            "movieCover": "/static/cover/cover1.png",
+            "reviewScore": 10
+        },
+        {
+            "movieSort": "热门",
+            "movieId": 1,
+            "movieName": "我不是药神",
+            "movieCover": "/static/cover/cover1.png",
+            "reviewScore": 10
+        }
+     ]
+}

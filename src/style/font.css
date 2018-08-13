@@ -1,0 +1,13 @@
+.bold-title {
+  font-weight: bold;
+  font-family: Microsoft YaHei;
+  font-size: 20px;
+  color: #494949;
+  letter-spacing: 0;
+}
+.rank-score {
+  font-family: Microsoft YaHei;
+  font-size: 24px;
+  color: #F7BA2A;
+  letter-spacing: 0;
+}
