@@ -61,20 +61,20 @@ export default {
   },
   methods: {
     search () {
-      localStorage.removeItem('searchResult')
+      sessionStorage.removeItem('searchResult')
       // 后台搜索
       // this.$axios.post('/search', {
       //   searchContent: this.searchContent
       // }).then((res) => {
       //   if (res.status === 200) {
       //     this.$router.push('searchResult')
-      //     localStorage.setItem('searchResult', JSON.stringify(res.resultInfo))
+      //     sessionStorage.setItem('searchResult', JSON.stringify(res.resultInfo))
       //   }
       // })
 
       // 测试搜索
       this.$router.push('searchResult')
-      localStorage.setItem('searchResult', JSON.stringify(this.resultInfo))
+      sessionStorage.setItem('searchResult', JSON.stringify(this.resultInfo))
     },
     handleSelect (key, keyPath) {
       // console.log(key, keyPath)

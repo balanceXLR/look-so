@@ -40,6 +40,7 @@ export default {
       login(this.userName, this.password).then((res) => {
         if (res.user) {
           console.log(res.user)
+          sessionStorage.setItem('user', res.user)
         }
       })
       this.loginVisible = false

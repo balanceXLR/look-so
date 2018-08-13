@@ -45,9 +45,9 @@ import {goMovieDetail} from '@/js/router'
 export default {
   data () {
     return {
-      resultInfo: JSON.parse(localStorage.getItem('searchResult')).resultContent,
+      resultInfo: JSON.parse(sessionStorage.getItem('searchResult')).resultContent,
       pageSize: 10,
-      number: JSON.parse(localStorage.getItem('searchResult')).number,
+      number: JSON.parse(sessionStorage.getItem('searchResult')).number,
       currentPage: 1
     }
   },
@@ -66,7 +66,7 @@ export default {
   },
   computed: {
     scoreIcon () {
-      let temp = JSON.parse(localStorage.getItem('searchResult')).resultContent
+      let temp = JSON.parse(sessionStorage.getItem('searchResult')).resultContent
       let arr = []
       for (let i = 0; i < temp.length; i++) {
         arr.push(temp[i].movieScore / 2)

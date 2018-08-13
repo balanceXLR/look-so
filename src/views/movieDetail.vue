@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     movieId () {
-      return JSON.parse(localStorage.getItem('currentMovie'))
+      return JSON.parse(sessionStorage.getItem('currentMovie'))
     },
     score: {
       get: function () { return this.movieInfo.reviewScore / 2 },
