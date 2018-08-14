@@ -3,10 +3,10 @@
     <div class="content-wrapper">
       <span class="header-title">Look-So</span>
       <ul class="header-ul">
-        <li class="header-login" v-show="!showHeader" @click="showLogin">登录</li>
-        <li class="header-register" v-show="!showHeader" @click="showRegister">注册</li>
-        <li><img class="header-head" src="/static/img/head.JPG" alt="" v-show="showHeader"></li>
-        <li v-show="showHeader" @click="signOut">退出</li>
+        <li class="header-login" v-show="!isLogin" @click="showLogin">登录</li>
+        <li class="header-register" v-show="!isLogin" @click="showRegister">注册</li>
+        <li><img class="header-head" src="/static/img/head.JPG" alt="" v-show="isLogin"></li>
+        <li v-show="isLogin" @click="signOut">退出</li>
       </ul>
     </div>
   </div>
@@ -14,13 +14,16 @@
 
 <script>
 import bus from '@/js/bus'
+import { mapMutations, mapGetters } from 'vuex'
+
 export default {
   data () {
     return {
-      // showHeader: false
+      // isLogin: false
     }
   },
   methods: {
+    ...mapMutations(['SIGNOUT']),
     showLogin () {
       bus.$emit('showLogin', true)
     },
@@ -28,18 +31,20 @@ export default {
       bus.$emit('showRegister', true)
     },
     signOut () {
-      sessionStorage.removeItem('user')
-      console.log(this.showHeader)
+      this.SIGNOUT()
+      console.log(this.isLogin)
     }
   },
   computed: {
-    showHeader () {
-      if (sessionStorage.getItem('user')) {
-        return true
-      } else {
-        return false
-      }
-    }
+    // isLogin () {
+    //   if (sessionStorage.getItem('user')) {
+    //     return true
+    //   } else {
+    //     return false
+    //   }
+    // }
+    ...mapGetters(['isLogin'])
+
   }
 }
 

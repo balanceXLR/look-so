@@ -20,6 +20,7 @@
 <script>
 import bus from '@/js/bus'
 import { login } from '@/js/api'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -35,16 +36,22 @@ export default {
       this.loginVisible = msg
     })
   },
+  updated () {
+    console.log(this.user)
+  },
   methods: {
+    ...mapMutations(['LOGIN']),
     doLogin () {
       login(this.userName, this.password).then((res) => {
         if (res.user) {
           console.log(res.user)
-          sessionStorage.setItem('user', res.user)
+          this.LOGIN(res.user)
         }
       })
       this.loginVisible = false
     }
+  },
+  computed: {
   }
 }
 
