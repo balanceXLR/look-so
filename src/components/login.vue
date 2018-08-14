@@ -11,7 +11,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="loginVisible = false">取 消</el-button>
-            <el-button type="primary" @click="doLogin">确 定</el-button>
+            <el-button type="primary" @click="_Login">确 定</el-button>
         </div>
     </el-dialog>
   </div>
@@ -21,6 +21,7 @@
 import bus from '@/js/bus'
 import { login } from '@/js/api'
 import { mapMutations } from 'vuex'
+import { doAlert } from '@/js/common'
 export default {
   data () {
     return {
@@ -41,14 +42,17 @@ export default {
   },
   methods: {
     ...mapMutations(['LOGIN']),
-    doLogin () {
+    _Login () {
       login(this.userName, this.password).then((res) => {
         if (res.user) {
           console.log(res.user)
           this.LOGIN(res.user)
+          doAlert(this, 'success', '登录成功')
+          this.loginVisible = false
+        } else {
+          doAlert(this, 'warning', '注册失败')
         }
       })
-      this.loginVisible = false
     }
   },
   computed: {

@@ -14,7 +14,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="registerVisible = false">取 消</el-button>
-            <el-button type="primary" @click="registerVisible = false">确 定</el-button>
+            <el-button type="primary" @click="_register">确 定</el-button>
         </div>
     </el-dialog>
   </div>
@@ -22,6 +22,9 @@
 
 <script>
 import bus from '@/js/bus'
+import { register } from '@/js/api'
+import { mapMutations } from 'vuex'
+import { doAlert } from '@/js/common'
 export default {
   data () {
     return {
@@ -36,6 +39,21 @@ export default {
     bus.$on('showRegister', (msg) => {
       this.registerVisible = msg
     })
+  },
+  methods: {
+    ...mapMutations(['LOGIN']),
+    _register () {
+      register(this.userName, this.password).then((res) => {
+        if (res.user) {
+          // console.log(res.user)
+          this.LOGIN(res.user)
+          this.registerVisible = false
+          doAlert(this, 'success', '注册成功')
+        } else {
+          doAlert(this, 'warning', '注册失败')
+        }
+      })
+    }
   }
 }
 

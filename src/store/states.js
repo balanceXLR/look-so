@@ -1,5 +1,5 @@
 export default {
-  user: sessionStorage.getItem('user'),
-  isLogin: false,
+  user: JSON.parse(sessionStorage.getItem('user')) || {},
+  isLogin: JSON.parse(sessionStorage.getItem('user')),
   currentMoive: 0
 }
