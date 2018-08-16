@@ -1,14 +1,12 @@
 import router from '@/router'
 
 export function goMovieDetail (movieId) {
-  sessionStorage.removeItem('currentMovie')
   router.push({
     name: 'movieDetail',
-    param: {
+    params: {
       movieId: movieId
     }
   })
-  sessionStorage.setItem('currentMovie', movieId)
 }
 export function goRank () {
   router.push({

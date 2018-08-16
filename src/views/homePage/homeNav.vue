@@ -21,6 +21,7 @@
 
 <script>
 import {getAllMovieName} from '@/js/api'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -28,31 +29,7 @@ export default {
       movies: [],
       restaurants: [],
       tiemout: null,
-      searchContent: '',
-      resultInfo: {
-        resultContent: [
-          {
-            movieId: 1,
-            movieCover: '/static/cover/cover1.png',
-            movieName: '我不是药神',
-            movieDir: '文牧野',
-            movieAct: ' 徐峥 / 王传君 / 周一围 / 谭卓 / 章宇 /',
-            movieShow: '2017-07-05',
-            movieScore: 9.7
-          },
-          {
-            movieId: 2,
-            movieCover: '/static/cover/cover1.png',
-            movieName: '我不是药神',
-            movieDir: '文牧野',
-            movieAct: ' 徐峥 / 王传君 / 周一围 / 谭卓 / 章宇 /',
-            movieShow: '2017-07-05',
-            movieScore: 5
-          }
-        ],
-        number: 200
-      }
-
+      searchContent: ''
     }
   },
   created () {
@@ -60,8 +37,8 @@ export default {
     // console.log(this.activeIndex)
   },
   methods: {
+    ...mapMutations(['SEARCH']),
     search () {
-      sessionStorage.removeItem('searchResult')
       // 后台搜索
       // this.$axios.post('/search', {
       //   searchContent: this.searchContent
@@ -73,8 +50,8 @@ export default {
       // })
 
       // 测试搜索
+      this.SEARCH()
       this.$router.push('searchResult')
-      sessionStorage.setItem('searchResult', JSON.stringify(this.resultInfo))
     },
     handleSelect (key, keyPath) {
       // console.log(key, keyPath)

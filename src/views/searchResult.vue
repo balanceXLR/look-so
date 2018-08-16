@@ -3,7 +3,7 @@
       <div class="result-left">
           <div class="result-title">搜索结果</div>
           <div class="result-content">
-            <div class="result-item" v-for="(result, index) in resultInfo" :key="index">
+            <div class="result-item" v-for="(result, index) in resultContent" :key="index">
                 <div class="cover-wrap">
                     <img class="cover" :src="result.movieCover" alt=""  @click="_goMovieDetail(result.movieId)">
                 </div>
@@ -42,34 +42,40 @@
 
 <script>
 import {goMovieDetail} from '@/js/router'
+import { mapGetters } from 'vuex'
+import { search } from '@/js/api'
 export default {
   data () {
     return {
-      resultInfo: JSON.parse(sessionStorage.getItem('searchResult')).resultContent,
       pageSize: 10,
-      number: JSON.parse(sessionStorage.getItem('searchResult')).number,
-      currentPage: 1
+      currentPage: 1,
+      resultContent: [],
+      number: 0
     }
   },
   created () {
-    // console.log(this.resultInfo)
-    // console.log(this.scoreIcon)
-    // console.log(this.number)
+    this._search()
   },
   methods: {
     currentChange (page) {
       this.currentPage = page
+    },
+    _search () {
+      search(this.currentMovie).then(res => {
+        this.resultContent = res.resultInfo.resultContent
+        this.number = res.resultInfo.number
+      })
     },
     _goMovieDetail (movieId) {
       goMovieDetail(movieId)
     }
   },
   computed: {
+    ...mapGetters(['currentMovie']),
     scoreIcon () {
-      let temp = JSON.parse(sessionStorage.getItem('searchResult')).resultContent
       let arr = []
-      for (let i = 0; i < temp.length; i++) {
-        arr.push(temp[i].movieScore / 2)
+      for (let i = 0; i < this.resultContent.length; i++) {
+        arr.push(this.resultContent[i].movieScore / 2)
       }
       //   console.log(this.resultInfo.lenth)
       //   for (let i = 0; i < this.resultInfo.lenth; i++) {

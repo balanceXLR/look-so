@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Message } from 'element-ui'
 // 用户登录，前端测试暂时用json返回
 export function login (userName, password) {
   // 测试用
@@ -12,7 +13,7 @@ export function login (userName, password) {
     }
   })
   // 实际用
-  // return axios.post('userLogin', {
+  // return axios.post('user/userLogin', {
   //   userName: userName,
   //   password: password
   // }).then((res) => {
@@ -34,7 +35,7 @@ export function register (userName, password) {
     }
   })
   // 实际用
-  // return axios.post('userRegister', {
+  // return axios.post('user/userRegister', {
   //   userName: userName,
   //   password: password
   // }).then((res) => {
@@ -67,7 +68,7 @@ export function getRecommendReviews () {
     return Promise.resolve(res.data)
   })
 }
-// 获取电影页面所有电影
+// 获取搜索电影名
 export function getAllMovieName () {
   return axios.get('/static/json/allMovieName.json').then((res) => {
     return Promise.resolve(res.data)
@@ -105,6 +106,21 @@ export function getAllRank (page) {
     return Promise.resolve(res.data)
   })
 }
+// 搜索
+export function search (keyWord) {
+  // 实际用
+  // return axios.post('search', {
+  //   params: keyWord
+  // }).then((res) => {
+  //   return Promise.resolve(res.data)
+  // })
+  // 测试用
+  return axios.get('/static/json/search.json', {
+    params: keyWord
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
 // 获取电影详情
 export function getMovieDetail (movieId) {
   return axios.get('/static/json/movieDetail.json', {
@@ -114,4 +130,48 @@ export function getMovieDetail (movieId) {
   }).then((res) => {
     return Promise.resolve(res.data)
   })
+}
+// 获取电影所有影评（每次10条）
+export function getMovieAllReviews (movieId, page) {
+  return axios.get('/static/json/movieAllReviews.json', {
+    params: {
+      movieId: movieId,
+      page: page
+    }
+  }).then((res) => {
+    return Promise.resolve(res.data)
+  })
+}
+// 写影评
+export function writeReview (movieId, userId, score, text) {
+  // 测试用
+  return axios.get('/static/json/user.json').then((res) => {
+    if (res.status === 200) {
+      // 登录成功返回data的一个user对象，失败返回空对象
+      return Promise.resolve('评论成功')
+    } else {
+      Message({
+        type: 'warnring',
+        text: '评论失败'
+      })
+    }
+  })
+  // 实际用
+  // return axios.post('/review/writeReview', {
+  //   params: {
+  //     movieId: movieId,
+  //     userId: userId,
+  //     reviewScore: score,
+  //     reviewCont: text
+  //   }
+  // }).then((res) => {
+  //   if (res.status === 200) {
+  //     return Promise.resolve('评论成功')
+  //   } else {
+  //     Message({
+  //       type: 'warning',
+  //       text: '评论失败'
+  //     })
+  //   }
+  // })
 }

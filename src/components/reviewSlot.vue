@@ -1,7 +1,7 @@
 <template>
   <div class="review-slot" ref="reviewSlot">
-    <div class="review-left">
-      <movie-slot v-show="isDetail">
+    <div class="review-left" v-show="isDetail">
+      <movie-slot >
         <div class="cover-wrap">
             <img class="movie-cover" :src="review.movieCover" alt="" @click="_goMovieDetail(review.movieId)">
         </div>
@@ -103,12 +103,11 @@ export default {
   display: flex;
   margin-bottom: 20px;
   .review-left {
-
+    margin-right: 20px;
   }
   .review-right {
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
     .top {
       display: flex;
       align-items: center;

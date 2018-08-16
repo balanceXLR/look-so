@@ -7,9 +7,11 @@ export default {
     state.isLogin = true
   },
   [types.SIGNOUT] (state) {
-    // state.user = {}
-    // sessionStorage.setItem('user', state.user)
     sessionStorage.removeItem('user')
+    state.user = {}
     state.isLogin = false
+  },
+  [types.SEARCH] (state, item) {
+    state.currentMovie = item
   }
 }

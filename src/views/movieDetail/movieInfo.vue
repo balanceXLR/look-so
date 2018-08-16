@@ -106,7 +106,7 @@ export default {
     .intro-wrap {
         margin-top: 20px;
         .intro-title {
-            .all-font(Microsoft YaHei, 18px, #409EFF, 0);
+            .all-font(Microsoft YaHei, 18px, #67C23A, 0);
         }
         .intro-content {
             margin-top: 12px;

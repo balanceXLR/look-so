@@ -5,7 +5,7 @@
       <ul class="header-ul">
         <li class="header-login" v-show="!isLogin" @click="showLogin">登录</li>
         <li class="header-register" v-show="!isLogin" @click="showRegister">注册</li>
-        <li><img class="header-head" src="/static/img/head.JPG" alt="" v-show="isLogin"></li>
+        <li><img class="header-head" :src="user.userHead" alt="" v-show="isLogin"></li>
         <li v-show="isLogin" @click="signOut">退出</li>
       </ul>
     </div>
@@ -32,7 +32,7 @@ export default {
     },
     signOut () {
       this.SIGNOUT()
-      console.log(this.isLogin)
+      this.$message.success('退出成功')
     }
   },
   computed: {
@@ -43,7 +43,8 @@ export default {
     //     return false
     //   }
     // }
-    ...mapGetters(['isLogin'])
+    ...mapGetters(['isLogin']),
+    ...mapGetters(['user'])
 
   }
 }

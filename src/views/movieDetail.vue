@@ -1,8 +1,12 @@
 <template>
   <div class="movie-detail">
     <div class="detail-left">
-      <movie-info :movieInfo="movieInfo" class="movie-info"></movie-info>
+      <movie-info class="movie-info" :movieInfo="movieInfo" ></movie-info>
       <write-review class="write-review"></write-review>
+      <movie-review class="movie-review" :hotReviews="hotReviews" :movieId="movieId"></movie-review>
+    </div>
+    <div class="detail-right">
+      <movie-map></movie-map>
     </div>
   </div>
 </template>
@@ -11,15 +15,20 @@
 import {getMovieDetail} from '@/js/api'
 import MovieInfo from './movieDetail/movieInfo'
 import WriteReview from './movieDetail/writeReview'
+import MovieReview from './movieDetail/movieReview'
+import MovieMap from './movieDetail/movieMap'
 export default {
   components: {
     MovieInfo,
-    WriteReview
+    WriteReview,
+    MovieReview,
+    MovieMap
   },
   data () {
     return {
       movieInfo: {},
-      hotReviews: []
+      hotReviews: [],
+      allReviews: []
     }
   },
   created () {
@@ -30,13 +39,13 @@ export default {
       getMovieDetail(this.movieId).then((res) => {
         this.movieInfo = res.movieInfo
         this.hotReviews = res.hotReviews
-        this.allReviews = res.allReviews
       })
     }
   },
   computed: {
     movieId () {
-      return JSON.parse(sessionStorage.getItem('currentMovie'))
+      // console.log(this.$route.params.movieId)
+      return this.$route.params.movieId
     },
     score: {
       get: function () { return this.movieInfo.reviewScore / 2 },
@@ -48,11 +57,15 @@ export default {
 </script>
 <style lang="less" scoped>
 .movie-detail {
+  display: flex;
   .detail-left {
     width: 70%;
-    .write-review {
+    .write-review, .movie-review {
       margin-top: 20px;
     }
+  }
+  .detail-right {
+    width: 30%;
   }
 }
 </style>
