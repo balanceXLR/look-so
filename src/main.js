@@ -17,7 +17,7 @@ Vue.use(ElementUI)
 Vue.use(AMap)
 AMap.initAMapApiLoader({
   key: 'd2db0a5f0f365b06a60f28999ea45f7c',
-  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor', 'Geolocation'],
   uiVersion: '1.0.11'
 })
 /* eslint-disable no-new */

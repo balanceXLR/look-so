@@ -1,12 +1,12 @@
 <template>
-  <div class="movie-detail">
+  <div class="movie-detail" v-loading="isLoading">
     <div class="detail-left">
       <movie-info class="movie-info" :movieInfo="movieInfo" ></movie-info>
       <write-review class="write-review"></write-review>
       <movie-review class="movie-review" :hotReviews="hotReviews" :movieId="movieId"></movie-review>
     </div>
     <div class="detail-right">
-      <movie-map></movie-map>
+      <movie-map :movieName="movieName"></movie-map>
     </div>
   </div>
 </template>
@@ -28,7 +28,9 @@ export default {
     return {
       movieInfo: {},
       hotReviews: [],
-      allReviews: []
+      allReviews: [],
+      isLoading: true,
+      movieName: ''
     }
   },
   created () {
@@ -39,6 +41,7 @@ export default {
       getMovieDetail(this.movieId).then((res) => {
         this.movieInfo = res.movieInfo
         this.hotReviews = res.hotReviews
+        this.isLoading = false
       })
     }
   },
@@ -50,6 +53,11 @@ export default {
     score: {
       get: function () { return this.movieInfo.reviewScore / 2 },
       set: function () {}
+    }
+  },
+  watch: {
+    movieInfo (val) {
+      this.movieName = val.movieName
     }
   }
 }
@@ -65,6 +73,7 @@ export default {
     }
   }
   .detail-right {
+    margin-left: 50px;
     width: 30%;
   }
 }

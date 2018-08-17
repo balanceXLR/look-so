@@ -1,11 +1,11 @@
 <template>
   <div class="home-header">
     <div class="content-wrapper">
-      <span class="header-title">Look-So</span>
+      <span class="header-title" @click="_goMovieHome">Look-So</span>
       <ul class="header-ul">
         <li class="header-login" v-show="!isLogin" @click="showLogin">登录</li>
         <li class="header-register" v-show="!isLogin" @click="showRegister">注册</li>
-        <li><img class="header-head" :src="user.userHead" alt="" v-show="isLogin"></li>
+        <li><img class="header-head" :src="user.userHead" alt="" v-show="isLogin" @click="_goUserHome"></li>
         <li v-show="isLogin" @click="signOut">退出</li>
       </ul>
     </div>
@@ -15,7 +15,7 @@
 <script>
 import bus from '@/js/bus'
 import { mapMutations, mapGetters } from 'vuex'
-
+import { goUserHome, goMovieHome } from '@/js/router'
 export default {
   data () {
     return {
@@ -33,6 +33,14 @@ export default {
     signOut () {
       this.SIGNOUT()
       this.$message.success('退出成功')
+      this._goMovieHome()
+    },
+    _goMovieHome () {
+      goMovieHome()
+    },
+    _goUserHome () {
+      // console.log(this.user.userType)
+      goUserHome(this.user.userType)
     }
   },
   computed: {
@@ -62,6 +70,7 @@ export default {
       width: 1200px;
       margin: 0 auto;
       .header-title {
+        cursor: pointer;
         .all-font(MicrosoftYaHei-Bold, 18px, #ffffff, 0);
       }
       .header-ul {

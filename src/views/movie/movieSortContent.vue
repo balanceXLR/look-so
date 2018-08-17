@@ -136,7 +136,7 @@ export default {
   .movie-content {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    // justify-content: space-around;
     margin-top: 12px;
     .movie-info {
       margin: 0 30px 12px 0;

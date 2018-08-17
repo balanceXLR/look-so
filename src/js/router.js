@@ -23,3 +23,19 @@ export function goReview () {
     name: 'review'
   })
 }
+export function goUserHome (type) {
+  if (type === 1) {
+    router.push({
+      name: 'userHome'
+    })
+  } else {
+    router.push({
+      name: 'adminHome'
+    })
+  }
+}
+export function goMovieHome () {
+  router.push({
+    name: 'recommend'
+  })
+}

@@ -9,6 +9,7 @@ export function login (userName, password) {
   }).then((res) => {
     if (res.status === 200) {
       // 登录成功返回data的一个user对象，失败返回空对象
+      // userType: 1为普通用户，2为管理员
       return Promise.resolve(res.data)
     }
   })
@@ -156,22 +157,44 @@ export function writeReview (movieId, userId, score, text) {
       })
     }
   })
-  // 实际用
-  // return axios.post('/review/writeReview', {
-  //   params: {
-  //     movieId: movieId,
-  //     userId: userId,
-  //     reviewScore: score,
-  //     reviewCont: text
-  //   }
-  // }).then((res) => {
-  //   if (res.status === 200) {
-  //     return Promise.resolve('评论成功')
-  //   } else {
-  //     Message({
-  //       type: 'warning',
-  //       text: '评论失败'
-  //     })
-  //   }
-  // })
+}
+// 实际用
+// return axios.post('/review/writeReview', {
+//   params: {
+//     movieId: movieId,
+//     userId: userId,
+//     reviewScore: score,
+//     reviewCont: text
+//   }
+// }).then((res) => {
+//   if (res.status === 200) {
+//     return Promise.resolve('评论成功')
+//   } else {
+//     Message({
+//       type: 'warning',
+//       text: '评论失败'
+//     })
+//   }
+// })
+// 获取用户收藏
+export function getUserCollect (userId, page) {
+  return axios.get('/static/json/userCollect.json', {
+    params: {
+      userId: userId,
+      page: page
+    }
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+// 获取用户评论
+export function getUserReview (userId, page) {
+  return axios.get('/static/json/userReview.json', {
+    params: {
+      userId: userId,
+      page: page
+    }
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
 }
