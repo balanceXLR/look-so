@@ -1,5 +1,5 @@
 <template>
-  <div class="user-review">
+  <div class="user-review" v-loading="isLoading">
       <review-slot v-for="(review,index) in reviews" :key="index" :review="review"></review-slot>
   </div>
 </template>
@@ -14,7 +14,8 @@ export default {
   },
   data () {
     return {
-      reviews: []
+      reviews: [],
+      isLoading: true
     }
   },
   created () {
@@ -23,8 +24,9 @@ export default {
   methods: {
     _getUserReview () {
       getUserReview(this.user.userId, 10).then(res => {
-        console.log(res.userReview)
+        // console.log(res.userReview)
         this.reviews = res.userReview
+        this.isLoading = false
       })
     }
   },

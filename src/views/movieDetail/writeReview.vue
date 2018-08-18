@@ -37,7 +37,12 @@ export default {
       } else if (this.reviewCont === '') {
         this.$message.warning('内容不能为空')
       } else {
-        writeReview(this.currentMovie, this.user.userId, this.reviewScore, this.reviewCont).then((res) => {
+        let param = new URLSearchParams()
+        param.append('movieId', this.currentMovie)
+        param.append('userId', this.user.userId)
+        param.append('reviewScore', this.reviewScore)
+        param.append('reviewCont', this.reviewCont)
+        writeReview(param).then((res) => {
           this.$message.success(res)
         })
       }
