@@ -1,30 +1,12 @@
 # look-so
-
-> A Vue.js project
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+类豆瓣电影评论网站
+开发需知：
+1.数据库修改：
+用户：
+user_type: 是否为管理员 1普通用户 2管理员
+user_level: 用户评论等级（影评小白，资深评论人等）
+user_status：是否封禁：1正常，2封禁
+电影：
+movie_slider: 电影长图（轮播图） 
+moavie_status：是否下架：1正常，2下架
+2.接口都写在src/js/api.js里了（除了用户头像修改在src/views/userInfo.vue中
