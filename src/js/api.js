@@ -1,59 +1,42 @@
 import axios from 'axios'
+// import qs from 'qs'
 import { Message } from 'element-ui'
-// 用户登录，前端测试暂时用json返回
+// 用户登录
+export const baseUrl = 'http://192.168.1.101:8080/lookso'
+// const config = {
+//   headers: {
+//     'Access-Control-Allow-Origin': '*',
+//     'Content-Type': 'application/x-www-form-urlencoded'
+//   },
+//   responseType: 'json'
+// }
 export function login (userName, password) {
-  // 测试用
-  return axios.get('/static/json/user.json', {
-    userName: userName,
-    password: password
-  }).then((res) => {
+  let param = `${baseUrl}/user/login.json?name=${userName}&password=${password}`
+  return axios.post(param).then((res) => {
     if (res.status === 200) {
-      // 登录成功返回data的一个user对象，失败返回空对象
-      // userType: 1为普通用户，2为管理员
       return Promise.resolve(res.data)
     }
   })
-  // 实际用
-  // return axios.post('user/userLogin', {
-  //   userName: userName,
-  //   password: password
-  // }).then((res) => {
-  //   if (res.status === 200) {
-  //     return Promise.resolve(res.data)
-  //   }
-  // })
 }
-// 用户注册，前端测试暂时用json返回
+// 用户注册
 export function register (userName, password) {
-  // 测试用
-  return axios.get('/static/json/user.json', {
-    userName: userName,
-    password: password
-  }).then((res) => {
+  let param = `${baseUrl}/user/register.json?name=${userName}&password=${password}`
+  return axios.post(param).then((res) => {
     if (res.status === 200) {
-      // 注册成功返回data的一个user对象，失败返回空对象
       return Promise.resolve(res.data)
     }
   })
-  // 实际用
-  // return axios.post('user/userRegister', {
-  //   userName: userName,
-  //   password: password
-  // }).then((res) => {
-  //   if (res.status === 200) {
-  //     return Promise.resolve(res.data)
-  //   }
-  // })
 }
 // 获取轮播图 4张
 export function getRecommendSlider () {
-  return axios.get('/static/json/recommendSlider.json').then((res) => {
+  let param = `${baseUrl}/movie/slider.json`
+  return axios.post(param).then((res) => {
     return Promise.resolve(res.data)
   })
 }
 // 获取首页榜单 9部
 export function getRecommendRank () {
-  return axios.get('/static/json/recommendRank.json').then((res) => {
+  return axios.post(baseUrl + '/movie/top.json').then((res) => {
     return Promise.resolve(res.data)
   })
 }
@@ -71,7 +54,8 @@ export function getRecommendReviews () {
 }
 // 获取搜索电影名
 export function getAllMovieName () {
-  return axios.get('/static/json/allMovieName.json').then((res) => {
+  let param = `${baseUrl}/movie/similar.json`
+  return axios.post(param).then((res) => {
     return Promise.resolve(res.data)
   })
 }
@@ -110,15 +94,7 @@ export function getAllRank (page) {
 // 搜索
 export function search (keyWord) {
   // 实际用
-  // return axios.post('search', {
-  //   params: keyWord
-  // }).then((res) => {
-  //   return Promise.resolve(res.data)
-  // })
-  // 测试用
-  return axios.get('/static/json/search.json', {
-    params: keyWord
-  }).then((res) => {
+  return axios.post(baseUrl + '/movie/search.json' + '?message=' + keyWord).then((res) => {
     return Promise.resolve(res.data)
   })
 }

@@ -10,9 +10,11 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import AMap from 'vue-amap'
+import qs from 'qs'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
+Vue.prototype.$qs = qs
 Vue.use(ElementUI)
 Vue.use(AMap)
 AMap.initAMapApiLoader({

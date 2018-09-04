@@ -1,5 +1,5 @@
 <template>
-  <div class="user-info" v-loading="isLoading" >
+  <div class="user-info">
     <div class="info-left">
       <el-upload class="avatar-uploader" action="/user/uploadHead" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -7,21 +7,21 @@
       </el-upload>
     </div>
     <div class="info-right">
-      <el-form ref="form" :model="userInfo" label-width="80px">
+      <el-form ref="form" :model="user" label-width="80px">
       <el-form-item label="用户名">
-        <el-input v-model="userInfo.userName" :disabled="true"></el-input>
+        <el-input v-model="user.userName" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="昵称">
-        <el-input v-model="userInfo.userNick" :disabled="isEdit"></el-input>
+        <el-input v-model="user.userNick" :disabled="isEdit"></el-input>
       </el-form-item>
       <el-form-item label="性别">
-        <el-input v-model="userInfo.userSex" :disabled="isEdit"></el-input>
+        <el-input v-model="userSex" :disabled="isEdit"></el-input>
       </el-form-item>
       <el-form-item label="等级">
-        <el-input v-model="userInfo.userLevel" :disabled="true"></el-input>
+        <el-input v-model="userLevel" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="简介">
-        <el-input v-model="userInfo.userDesc" type="textarea" rows="3" resize="none" :disabled="isEdit"></el-input>
+        <el-input v-model="user.userDesc" type="textarea" rows="3" resize="none" :disabled="isEdit"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="isEdit = !isEdit">{{isEdit ? '编辑' : '取消'}}</el-button>
@@ -36,7 +36,8 @@
 import {
   mapGetters
 } from 'vuex'
-import {getUserInfo, editUser} from '@/js/api'
+import {getUserInfo, editUser, baseUrl} from '@/js/api'
+import {level, sex} from '@/js/common'
 export default {
   data () {
     return {
@@ -46,7 +47,7 @@ export default {
     }
   },
   created () {
-    this._getUserInfo()
+    // this._getUserInfo()
   },
   methods: {
     _getUserInfo () {
@@ -85,7 +86,13 @@ export default {
   computed: {
     ...mapGetters(['user']),
     imageUrl () {
-      return this.user.userHead
+      return baseUrl + this.user.userHead
+    },
+    userLevel () {
+      return level(this.user.userLevel)
+    },
+    userSex () {
+      return sex(this.user.userSex)
     }
   }
 }

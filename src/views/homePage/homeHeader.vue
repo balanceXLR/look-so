@@ -5,7 +5,7 @@
       <ul class="header-ul">
         <li class="header-login" v-show="!isLogin" @click="showLogin">登录</li>
         <li class="header-register" v-show="!isLogin" @click="showRegister">注册</li>
-        <li><img class="header-head" :src="user.userHead" alt="" v-show="isLogin" @click="_goUserHome"></li>
+        <li><img class="header-head" :src="user.userHead? baseUrl + user.userHead : ''" alt="" v-show="isLogin" @click="_goUserHome"></li>
         <li v-show="isLogin" @click="signOut">退出</li>
       </ul>
     </div>
@@ -14,12 +14,14 @@
 
 <script>
 import bus from '@/js/bus'
+import { baseUrl } from '@/js/api'
 import { mapMutations, mapGetters } from 'vuex'
 import { goUserHome, goMovieHome } from '@/js/router'
 export default {
   data () {
     return {
       // isLogin: false
+      baseUrl: baseUrl
     }
   },
   methods: {

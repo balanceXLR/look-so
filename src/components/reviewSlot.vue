@@ -36,6 +36,7 @@
 <script>
 import MovieSlot from './movieSlot'
 import {goMovieDetail} from '@/js/router'
+// import {level} from '@/js/common'
 export default {
   components: {
     MovieSlot
@@ -94,6 +95,9 @@ export default {
       goMovieDetail(movieId)
     }
   }
+  // computed: {
+
+  // }
 }
 
 </script>

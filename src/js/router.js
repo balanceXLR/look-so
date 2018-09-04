@@ -24,11 +24,11 @@ export function goReview () {
   })
 }
 export function goUserHome (type) {
-  if (type === 1) {
+  if (type === 0) {
     router.push({
       name: 'userHome'
     })
-  } else {
+  } else if (type === 1) {
     router.push({
       name: 'adminHome'
     })

@@ -33,37 +33,33 @@ export default {
     }
   },
   created () {
-    this._getAllMovieName()
     // console.log(this.activeIndex)
   },
   methods: {
     ...mapMutations(['SEARCH']),
     search () {
-      // 后台搜索
-      // this.$axios.post('/search', {
-      //   searchContent: this.searchContent
-      // }).then((res) => {
-      //   if (res.status === 200) {
-      //     this.$router.push('searchResult')
-      //     sessionStorage.setItem('searchResult', JSON.stringify(res.resultInfo))
-      //   }
-      // })
-
-      // 测试搜索
-      this.SEARCH()
+      this.SEARCH(this.searchContent)
       this.$router.push('searchResult')
     },
     handleSelect (key, keyPath) {
       // console.log(key, keyPath)
     },
     querySearchAsync (queryString, cb) {
-      var restaurants = this.movies
-      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants
-
-      clearTimeout(this.timeout)
-      this.timeout = setTimeout(() => {
+      // var promise = new Promise((resolve, reject) => {
+      //   resolve(this._getAllMovieName())
+      // })
+      // promise.then((res) => {
+      //   console.log('1' + res)
+      // var results = queryString ? res.filter(this.createStateFilter(queryString)) : res
+      // cb(results)
+      // })
+      getAllMovieName().then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.movies[i] = {value: res.data[i].name}
+        }
+        var results = queryString ? this.movies.filter(this.createStateFilter(queryString)) : this.movies
         cb(results)
-      }, 3000 * Math.random())
+      })
     },
     createStateFilter (queryString) {
       return (state) => {
@@ -75,10 +71,8 @@ export default {
     },
     _getAllMovieName () {
       getAllMovieName().then((res) => {
-        // console.log(res.allMovieName)
-        this.movies = res.allMovieName
+        this.movies = res.data
       })
-      // this.restaurants = this.loadAll()
     }
   },
   computed: {

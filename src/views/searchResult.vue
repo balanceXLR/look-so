@@ -5,12 +5,12 @@
           <div class="result-content">
             <div class="result-item" v-for="(result, index) in resultContent" :key="index">
                 <div class="cover-wrap">
-                    <img class="cover" :src="result.movieCover" alt=""  @click="_goMovieDetail(result.movieId)">
+                    <img class="cover" :src="result.cover" alt=""  @click="_goMovieDetail(result.id)">
                 </div>
                 <div class="movie-info">
-                    <div class="name" @click="_goMovieDetail(result.movieId)">{{result.movieName}}</div>
+                    <div class="name" @click="_goMovieDetail(result.id)">{{result.name}}</div>
                     <div class="director">导演：{{result.movieDir}}</div>
-                    <div class="actors">主演：{{result.movieAct}}</div>
+                    <div class="actors">主演：{{result.act}}</div>
                     <div class="score">
                         <el-rate
                         class="score-icon"
@@ -20,7 +20,7 @@
                         text-color="#ff9900"
                         score-template="{value}">
                         </el-rate>
-                        <div class="score-num">{{result.movieScore}}</div>
+                        <div class="score-num">{{result.score}}</div>
                     </div>
                 </div>
             </div>
@@ -62,8 +62,9 @@ export default {
     },
     _search () {
       search(this.currentMovie).then(res => {
-        this.resultContent = res.resultInfo.resultContent
-        this.number = res.resultInfo.number
+        console.log(res)
+        this.resultContent = res.data
+        // this.number = res.data
       })
     },
     _goMovieDetail (movieId) {

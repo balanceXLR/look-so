@@ -6,7 +6,7 @@
             <el-button style="float: right; padding: 3px 0" type="text" @click="_goRank">更多</el-button>
         </div>
         <div v-for="(item,index) in rankItems" :key="index" class="rank-item" @click="_goMovieDetail(item.movieId)" >
-            {{index+1}}：{{item.movieName}}
+            {{index+1}}：{{item.name.length > 20 ? item.name.substring(0,20) + '...': item.name}}
         </div>
     </el-card>
   </div>
@@ -34,7 +34,7 @@ export default {
     },
     _getRecommendRank () {
       getRecommendRank().then((res) => {
-        this.rankItems = res.recommendRank
+        this.rankItems = res.data
         this.isLoading = false
       })
     }
