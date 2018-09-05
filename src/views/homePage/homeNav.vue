@@ -13,16 +13,19 @@
         v-model="searchContent"
         :fetch-suggestions="querySearchAsync"
         placeholder="请输入内容"
-        @select="handleSelect2"></el-autocomplete>
+        @select="handleSelect2"
+        clearable></el-autocomplete>
       <el-button icon="el-icon-search" circle type="submit" @click="_search"></el-button>
     </div>
   </div>
 </template>
 
 <script>
-import {getAllMovieName, search} from '@/js/api'
+import {getAllMovieName} from '@/js/api'
 import {goSearchResult} from '@/js/router'
 import { mapMutations } from 'vuex'
+// import {resFilter} from '@/js/common'
+import event from '@/js/eventVue'
 export default {
   data () {
     return {
@@ -47,13 +50,15 @@ export default {
     ...mapMutations(['SEARCH']),
     ...mapMutations(['RESULT']),
     _search () {
-      this.SEARCH(this.searchContent)
-      this.RESULT(this.testResult)
+      // this.SEARCH(this.searchContent)
+      // this.RESULT(this.testResult)
+      event.$emit('keyword', this.searchContent)
+      console.log('发送' + this.searchContent)
       goSearchResult()
       // search(this.searchContent).then(res => {
-      //   console.log(res)
-      //   this.RESULT(res.data)
-      //   goSearchResult()
+      // resFilter(res.data)
+      // this.RESULT(res.data)
+      // goSearchResult()
       // })
     },
     handleSelect (key, keyPath) {

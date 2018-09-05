@@ -3,24 +3,24 @@
     <div class="review-left" v-show="isDetail">
       <movie-slot >
         <div class="cover-wrap">
-            <img class="movie-cover" :src="review.movieCover" alt="" @click="_goMovieDetail(review.movieId)">
+            <img class="movie-cover" :src="review.cover" alt="" @click="_goMovieDetail(review.movieId)">
         </div>
-        <span class="movie-name" @click="_goMovieDetail(review.movieId)">{{review.movieName}}</span>
+        <span class="movie-name" @click="_goMovieDetail(review.id)">{{review.name}}</span>
       </movie-slot>
     </div>
     <div class="review-right">
       <div class="top">
-        <span class="nick">{{review.userNick}}</span>
-        <img class="head" :src="review.userHead" alt="">
+        <span class="nick">{{review.user}}</span>
+        <img class="head" :src="review.head" alt="">
         <span class="score">
           <el-rate
             v-model="score"
             disabled>
           </el-rate>
-          <span class="score-num">{{review.reviewScore}}</span>
+          <span class="score-num">{{review.score}}</span>
         </span>
-        <span class="level">{{review.userLevel}}</span>
-        <span class="time">{{review.reviewTime}}</span>
+        <span class="level">{{review.level}}</span>
+        <span class="time">{{review.time}}</span>
         <div class="zan">
           <img class="zan-icon" src="/static/img/zan.png" alt="" v-show="review.isZan" @click="userZan">
           <img class="zan-icon" src="/static/img/zan2.png" alt="" v-show="review.isZan === false" @click="userZan">
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="content" ref="content">{{contentBrief}}</div>
-      <span class="open" @click="showAllCont(review.reviewCont)">{{openInfo}}</span>
+      <span class="open" @click="showAllCont(review.content)">{{openInfo}}</span>
     </div>
   </div>
 </template>
@@ -58,13 +58,15 @@ export default {
   },
   computed: {
     score () {
-      return this.review.reviewScore / 2
+      return this.review.score / 2
     },
     contentBrief () {
-      return this.review.reviewCont.substring(0, 220) + '...'
+      if (this.review.content) {
+        return this.review.content.substring(0, 220) + '...'
+      }
     },
     isDetail () {
-      if (this.review.movieCover) {
+      if (this.review.cover) {
         return true
       } else {
         return false

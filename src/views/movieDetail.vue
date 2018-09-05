@@ -3,7 +3,7 @@
     <div class="detail-left">
       <movie-info class="movie-info" :movieInfo="movieInfo" ></movie-info>
       <write-review class="write-review"></write-review>
-      <movie-review class="movie-review" :hotReviews="hotReviews" :movieId="movieId"></movie-review>
+      <movie-review class="movie-review"  :movieId="movieId"></movie-review>
     </div>
     <div class="detail-right">
       <movie-map :movieName="movieName"></movie-map>
@@ -40,7 +40,7 @@ export default {
     _getMovieDetail () {
       getMovieDetail(this.movieId).then((res) => {
         this.movieInfo = res.movieInfo
-        this.hotReviews = res.hotReviews
+        // this.hotReviews = res.hotReviews
         this.isLoading = false
       })
     }

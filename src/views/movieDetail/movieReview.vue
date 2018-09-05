@@ -25,6 +25,7 @@
 <script>
 import ReviewSlot from '@/components/reviewSlot'
 import {getMovieAllReviews} from '@/js/api'
+import {resFilter} from '@/js/common'
 export default {
   components: {
     ReviewSlot
@@ -34,14 +35,11 @@ export default {
       pageSize: 10,
       currentPage: 1,
       allReviews: [],
+      hotReviews: [],
       number: 0
     }
   },
   props: {
-    hotReviews: {
-      type: Array,
-      default: null
-    },
     movieId: {
       type: Number,
       default: -1
@@ -54,8 +52,10 @@ export default {
     currentChange () {
     },
     _getMovieAllReviews () {
-      getMovieAllReviews(this.movieId, this.pageSize).then(res => {
-        this.allReviews = res.allReviews
+      getMovieAllReviews(1, this.pageSize).then(res => {
+        resFilter(res.data)
+        this.hotReviews = res.data.splice(0, 3)
+        this.allReviews = res.data
         this.number = res.number
       })
     }

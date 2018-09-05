@@ -9,7 +9,7 @@
                 </div>
                 <div class="movie-info">
                     <div class="name" @click="_goMovieDetail(result.id)">{{result.name}}</div>
-                    <div class="director">导演：{{result.movieDir}}</div>
+                    <div class="director">导演：{{result.dir}}</div>
                     <div class="actors">主演：{{result.act}}</div>
                     <div class="score">
                         <el-rate
@@ -42,19 +42,23 @@
 
 <script>
 import {goMovieDetail} from '@/js/router'
-import { mapGetters } from 'vuex'
+import event from '@/js/eventVue'
+import {search} from '@/js/api'
+import {resFilter} from '@/js/common'
 export default {
   data () {
     return {
       pageSize: 10,
       currentPage: 1,
-      number: 0
+      number: 0,
+      resultContent: []
     }
   },
   created () {
+    this._search()
   },
   mounted () {
-    // console.log(this.result)
+    // console.log(this.resultContent)
   },
   methods: {
     currentChange (page) {
@@ -62,10 +66,19 @@ export default {
     },
     _goMovieDetail (movieId) {
       goMovieDetail(movieId)
+    },
+    _search () {
+      event.$on('keyword', msg => {
+        console.log('接收' + msg)
+        search(msg).then(res => {
+          resFilter(res.data)
+          this.resultContent = res.data
+          console.log(this.resultContent)
+        })
+      })
     }
   },
   computed: {
-    ...mapGetters({resultContent: 'searchResult'}),
     scoreIcon () {
       let arr = []
       for (let i = 0; i < this.resultContent.length; i++) {
@@ -117,6 +130,9 @@ export default {
                 .director, .actors, .show {
                     margin-top: 12px;
                     .all-font(Microsoft YaHei, 12px, #666666, 0);
+                }
+                .actors {
+                    width: 400px;
                 }
                 .score {
                     display: flex;

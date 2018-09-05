@@ -48,7 +48,7 @@ export function getRecommendMovies () {
 }
 // 获取首页推荐评论 5条
 export function getRecommendReviews () {
-  return axios.get('/static/json/recommendReviews.json').then((res) => {
+  return axios.post(baseUrl + '/review/json/recommendReviews.json').then((res) => {
     return Promise.resolve(res.data)
   })
 }
@@ -61,12 +61,7 @@ export function getAllMovieName () {
 }
 // 获取分类电影 sort为类别 传中文，如：科幻；page为当前页
 export function getSortMovies (sort, page) {
-  return axios.get('/static/json/sortMovies.json', {
-    params: {
-      movieSort: sort,
-      page: page
-    }
-  }).then((res) => {
+  return axios.post(baseUrl + '/movie/sort.json?sort=' + sort + '&page=' + page).then((res) => {
     return Promise.resolve(res.data)
   })
 }
@@ -110,12 +105,7 @@ export function getMovieDetail (movieId) {
 }
 // 获取电影所有影评（每次10条）
 export function getMovieAllReviews (movieId, page) {
-  return axios.get('/static/json/movieAllReviews.json', {
-    params: {
-      movieId: movieId,
-      page: page
-    }
-  }).then((res) => {
+  return axios.post(baseUrl + '/review/comment.json?id=' + movieId).then((res) => {
     return Promise.resolve(res.data)
   })
 }
