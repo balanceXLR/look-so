@@ -29,8 +29,8 @@ export function register (userName, password) {
 }
 // 获取轮播图 4张
 export function getRecommendSlider () {
-  let param = `${baseUrl}/movie/slider.json`
-  return axios.post(param).then((res) => {
+  // let param = `${baseUrl}/movie/slider.json`
+  return axios.post(baseUrl + '/movie/slider.json').then((res) => {
     return Promise.resolve(res.data)
   })
 }

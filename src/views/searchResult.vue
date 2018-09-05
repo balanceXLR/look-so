@@ -43,36 +43,29 @@
 <script>
 import {goMovieDetail} from '@/js/router'
 import { mapGetters } from 'vuex'
-import { search } from '@/js/api'
 export default {
   data () {
     return {
       pageSize: 10,
       currentPage: 1,
-      resultContent: [],
       number: 0
     }
   },
   created () {
-    this._search()
+  },
+  mounted () {
+    // console.log(this.result)
   },
   methods: {
     currentChange (page) {
       this.currentPage = page
-    },
-    _search () {
-      search(this.currentMovie).then(res => {
-        console.log(res)
-        this.resultContent = res.data
-        // this.number = res.data
-      })
     },
     _goMovieDetail (movieId) {
       goMovieDetail(movieId)
     }
   },
   computed: {
-    ...mapGetters(['currentMovie']),
+    ...mapGetters({resultContent: 'searchResult'}),
     scoreIcon () {
       let arr = []
       for (let i = 0; i < this.resultContent.length; i++) {

@@ -11,7 +11,10 @@ export default {
     state.user = {}
     state.isLogin = false
   },
-  [types.SEARCH] (state, item) {
-    state.currentMovie = item
+  [types.CURRENT] (state, item) {
+    sessionStorage.setItem('currentMovie', item)
+  },
+  [types.RESULT] (state, item) {
+    sessionStorage.setItem('searchResult', JSON.stringify(item))
   }
 }

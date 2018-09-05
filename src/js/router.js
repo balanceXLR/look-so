@@ -39,3 +39,8 @@ export function goMovieHome () {
     name: 'recommend'
   })
 }
+export function goSearchResult () {
+  router.push({
+    name: 'searchResult'
+  })
+}

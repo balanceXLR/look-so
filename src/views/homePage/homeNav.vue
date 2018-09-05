@@ -14,22 +14,30 @@
         :fetch-suggestions="querySearchAsync"
         placeholder="请输入内容"
         @select="handleSelect2"></el-autocomplete>
-      <el-button icon="el-icon-search" circle type="submit" @click="search"></el-button>
+      <el-button icon="el-icon-search" circle type="submit" @click="_search"></el-button>
     </div>
   </div>
 </template>
 
 <script>
-import {getAllMovieName} from '@/js/api'
+import {getAllMovieName, search} from '@/js/api'
+import {goSearchResult} from '@/js/router'
 import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      // activeIndex: this.$route.name,
       movies: [],
       restaurants: [],
       tiemout: null,
-      searchContent: ''
+      searchContent: '',
+      testResult: [
+        {
+          name: 1
+        },
+        {
+          name: 2
+        }
+      ]
     }
   },
   created () {
@@ -37,22 +45,21 @@ export default {
   },
   methods: {
     ...mapMutations(['SEARCH']),
-    search () {
+    ...mapMutations(['RESULT']),
+    _search () {
       this.SEARCH(this.searchContent)
-      this.$router.push('searchResult')
+      this.RESULT(this.testResult)
+      goSearchResult()
+      // search(this.searchContent).then(res => {
+      //   console.log(res)
+      //   this.RESULT(res.data)
+      //   goSearchResult()
+      // })
     },
     handleSelect (key, keyPath) {
       // console.log(key, keyPath)
     },
     querySearchAsync (queryString, cb) {
-      // var promise = new Promise((resolve, reject) => {
-      //   resolve(this._getAllMovieName())
-      // })
-      // promise.then((res) => {
-      //   console.log('1' + res)
-      // var results = queryString ? res.filter(this.createStateFilter(queryString)) : res
-      // cb(results)
-      // })
       getAllMovieName().then((res) => {
         for (let i = 0; i < res.data.length; i++) {
           this.movies[i] = {value: res.data[i].name}
