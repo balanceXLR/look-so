@@ -1,6 +1,7 @@
 import router from '@/router'
 
 export function goMovieDetail (movieId) {
+  sessionStorage.setItem('movieId', movieId)
   router.push({
     name: 'movieDetail',
     params: {
@@ -41,6 +42,9 @@ export function goMovieHome () {
 }
 export function goSearchResult () {
   router.push({
-    name: 'searchResult'
+    name: 'searchResult',
+    query: {
+      t: Date.now()
+    }
   })
 }

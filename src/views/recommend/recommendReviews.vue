@@ -13,9 +13,10 @@
 </template>
 
 <script>
-import {getRecommendReviews} from '@/js/api'
+import {getRecommendReviews, baseUrl} from '@/js/api'
 import {goReview} from '@/js/router'
 import ReviewSlot from '@/components/reviewSlot'
+import {userFliter} from '@/js/common'
 export default {
   components: {
     ReviewSlot
@@ -32,7 +33,20 @@ export default {
   methods: {
     _getRecommendReviews () {
       getRecommendReviews().then((res) => {
-        this.recommendReviews = res.recommendReviews
+        for (let i = 0; i < res.data.length; i++) {
+          this.recommendReviews[i] = {
+            id: res.data[i].movie.id,
+            cover: baseUrl + res.data[i].movie.cover,
+            name: res.data[i].movie.name,
+            head: res.data[i].user.head,
+            user: res.data[i].user.nickname,
+            score: res.data[i].score,
+            time: res.data[i].time,
+            level: res.data[i].user.level,
+            content: res.data[i].content
+          }
+        }
+        this.recommendReviews = userFliter(this.recommendReviews)
         this.isLoading = false
         // console.log(res.recommendReviews)
       })

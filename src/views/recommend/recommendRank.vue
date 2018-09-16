@@ -5,7 +5,7 @@
             <span class="rank-title">排行榜</span>
             <el-button style="float: right; padding: 3px 0" type="text" @click="_goRank">更多</el-button>
         </div>
-        <div v-for="(item,index) in rankItems" :key="index" class="rank-item" @click="_goMovieDetail(item.movieId)" >
+        <div v-for="(item,index) in rankItems" :key="index" class="rank-item" @click="_goMovieDetail(item.id)" >
             {{index+1}}：{{item.name.length > 20 ? item.name.substring(0,20) + '...': item.name}}
         </div>
     </el-card>

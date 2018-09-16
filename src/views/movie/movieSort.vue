@@ -18,7 +18,7 @@ import bus from '@/js/bus'
 export default {
   data () {
     return {
-      movieSorts: ['所有', '热门', '喜剧', '科幻', '悬疑', '爱情', '治愈', '动作', '国语', '欧美', '韩国', '日本'],
+      movieSorts: ['所有', '喜剧', '科幻', '悬疑', '爱情', '冒险', '动作'],
       currentSort: '所有'
     }
   },

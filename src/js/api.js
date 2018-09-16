@@ -1,8 +1,8 @@
 import axios from 'axios'
-// import qs from 'qs'
+import qs from 'qs'
 import { Message } from 'element-ui'
 // 用户登录
-export const baseUrl = 'http://192.168.1.101:8080/lookso'
+export const baseUrl = 'http://192.168.1.102:8080/lookso'
 // const config = {
 //   headers: {
 //     'Access-Control-Allow-Origin': '*',
@@ -11,7 +11,7 @@ export const baseUrl = 'http://192.168.1.101:8080/lookso'
 //   responseType: 'json'
 // }
 export function login (userName, password) {
-  let param = `${baseUrl}/user/login.json?name=${userName}&password=${password}`
+  let param = `/user/login.json?name=${userName}&password=${password}`
   return axios.post(param).then((res) => {
     if (res.status === 200) {
       return Promise.resolve(res.data)
@@ -20,7 +20,7 @@ export function login (userName, password) {
 }
 // 用户注册
 export function register (userName, password) {
-  let param = `${baseUrl}/user/register.json?name=${userName}&password=${password}`
+  let param = `/user/register.json?name=${userName}&password=${password}`
   return axios.post(param).then((res) => {
     if (res.status === 200) {
       return Promise.resolve(res.data)
@@ -30,82 +30,114 @@ export function register (userName, password) {
 // 获取轮播图 4张
 export function getRecommendSlider () {
   // let param = `${baseUrl}/movie/slider.json`
-  return axios.post(baseUrl + '/movie/slider.json').then((res) => {
+  return axios.post('/movie/slider.json').then((res) => {
     return Promise.resolve(res.data)
   })
 }
 // 获取首页榜单 9部
 export function getRecommendRank () {
-  return axios.post(baseUrl + '/movie/top.json').then((res) => {
+  return axios.post('/movie/top.json').then((res) => {
     return Promise.resolve(res.data)
   })
 }
 // 获取首页推荐电影 热门，国语，喜剧，科幻，悬疑，爱情，治愈 各6部；其中热门类别的电影是后台处理，并非实际有这个类别
-export function getRecommendMovies () {
-  return axios.get('/static/json/recommendMovies.json').then((res) => {
+export function getRecommendMovies (sort) {
+  return axios.post('/movie/recommend.json?' + qs.stringify({
+    sort: sort
+  })).then((res) => {
     return Promise.resolve(res.data)
   })
 }
 // 获取首页推荐评论 5条
 export function getRecommendReviews () {
-  return axios.post(baseUrl + '/review/json/recommendReviews.json').then((res) => {
+  return axios.post('/review/hot_comment.json').then((res) => {
     return Promise.resolve(res.data)
   })
 }
 // 获取搜索电影名
 export function getAllMovieName () {
-  let param = `${baseUrl}/movie/similar.json`
-  return axios.post(param).then((res) => {
+  return axios.post(`/movie/similar.json`).then((res) => {
     return Promise.resolve(res.data)
   })
 }
 // 获取分类电影 sort为类别 传中文，如：科幻；page为当前页
 export function getSortMovies (sort, page) {
-  return axios.post(baseUrl + '/movie/sort.json?sort=' + sort + '&page=' + page).then((res) => {
+  return axios.post('/movie/sort.json?sort=' + sort + '&page=' + page).then((res) => {
     return Promise.resolve(res.data)
   })
 }
-// 获取所有评论 type：'欢迎'为按点赞排行 '最新'为按时间排行
+// 获取所有评论 type：0为按点赞排行 1为按时间排行
 export function getAllReviews (type, page) {
-  return axios.get('/static/json/allReviews.json', {
-    params: {
-      type: type,
-      page: page
-    }
-  }).then((res) => {
+  return axios.post('/review/hot_review.json?' + qs.stringify({
+    type: type,
+    page: page
+  })).then((res) => {
     return Promise.resolve(res.data)
   })
 }
 // 排行页面获取所有排行
 export function getAllRank (page) {
-  return axios.get('/static/json/allRank.json', {
-    params: {
-      page: page
-    }
-  }).then((res) => {
+  return axios.post('/movie/ranking.json?' + qs.stringify({
+    page: page
+  })).then((res) => {
     return Promise.resolve(res.data)
   })
 }
 // 搜索
-export function search (keyWord) {
+export function search (page, keyWord) {
   // 实际用
-  return axios.post(baseUrl + '/movie/search.json' + '?message=' + keyWord).then((res) => {
+  return axios.post('/movie/search.json?' + qs.stringify({
+    page: page,
+    message: keyWord
+  })).then((res) => {
     return Promise.resolve(res.data)
   })
 }
 // 获取电影详情
 export function getMovieDetail (movieId) {
-  return axios.get('/static/json/movieDetail.json', {
-    params: {
-      movieId: movieId
-    }
-  }).then((res) => {
+  return axios.post('/movie/information.json?' + qs.stringify({
+    id: movieId
+  })).then((res) => {
     return Promise.resolve(res.data)
+  })
+}
+// 获取电影评分和评价人数
+export function getMovieScore (id) {
+  return axios.post('/review/comment_num.json?' + qs.stringify({
+    id: id
+  })).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+// 收藏
+export function movieCollect (uid, mid) {
+  return axios.post('/movie/collect.json?' + qs.stringify({
+    uid: uid,
+    mid: mid
+  })).then(res => {
+    return res.data
+  })
+}
+// 取消收藏
+export function movieUnCollect (id) {
+  return axios.post('/movie/cancel_collect.json?' + qs.stringify({
+    id: id
+  })).then(res => {
+    return res.data
+  })
+}
+// 收藏状态
+export function movieCollectState (uid, mid) {
+  return axios.post('/movie/iscollect.json?' + qs.stringify({
+    uid: uid,
+    mid: mid
+  })).then(res => {
+    return res.data
   })
 }
 // 获取电影所有影评（每次10条）
 export function getMovieAllReviews (movieId, page) {
-  return axios.post(baseUrl + '/review/comment.json?id=' + movieId).then((res) => {
+  return axios.post('/review/comment.json?id=' + movieId).then((res) => {
     return Promise.resolve(res.data)
   })
 }
@@ -162,23 +194,19 @@ export function editUser (userInfo) {
 }
 // 获取用户收藏
 export function getUserCollect (userId, page) {
-  return axios.get('/static/json/userCollect.json', {
-    params: {
-      userId: userId,
-      page: page
-    }
-  }).then(res => {
+  return axios.post('collect/user_collect.json?' + qs.stringify({
+    id: userId,
+    page: page
+  })).then(res => {
     return Promise.resolve(res.data)
   })
 }
 // 获取用户评论
 export function getUserReview (userId, page) {
-  return axios.get('/static/json/userReview.json', {
-    params: {
-      userId: userId,
-      page: page
-    }
-  }).then(res => {
+  return axios.post('/review/user_comment.json?' + qs.stringify({
+    id: userId,
+    page: page
+  })).then(res => {
     return Promise.resolve(res.data)
   })
 }
@@ -209,7 +237,7 @@ export function uploadMovie (param) {
 }
 // 管理员获取所有用户
 export function getAllUser () {
-  return axios.get('/static/json/allUser.json').then(res => {
+  return axios.post('/manager/all_user.json').then(res => {
     return Promise.resolve(res.data)
   })
 }

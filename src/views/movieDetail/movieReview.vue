@@ -3,11 +3,13 @@
       <div class="hot">
         <div class="title">热门影评</div>
         <review-slot v-for="(review,index) in hotReviews" :key="index" :review="review"></review-slot>
+        <div v-show="hotReviews.length === 0">暂无影评</div>
       </div>
       <div class="all">
         <div class="title">所有影评</div>
         <review-slot v-for="(review,index) in allReviews" :key="index" :review="review"></review-slot>
-        <div class="page">
+        <div v-show="allReviews.length === 0">暂无影评</div>
+        <!-- <div class="page">
           <el-pagination
             background
             layout="prev, pager, next"
@@ -16,7 +18,7 @@
             :current-page="currentPage"
             @current-change="currentChange">
           </el-pagination>
-        </div>
+        </div> -->
 
       </div>
   </div>
@@ -25,7 +27,7 @@
 <script>
 import ReviewSlot from '@/components/reviewSlot'
 import {getMovieAllReviews} from '@/js/api'
-import {resFilter} from '@/js/common'
+import {userFliter} from '@/js/common'
 export default {
   components: {
     ReviewSlot
@@ -52,11 +54,13 @@ export default {
     currentChange () {
     },
     _getMovieAllReviews () {
-      getMovieAllReviews(1, this.pageSize).then(res => {
-        resFilter(res.data)
-        this.hotReviews = res.data.splice(0, 3)
-        this.allReviews = res.data
-        this.number = res.number
+      getMovieAllReviews(sessionStorage.getItem('movieId')).then(res => {
+        if (res.data) {
+          userFliter(res.data)
+          this.hotReviews = res.data.splice(0, 3)
+          this.allReviews = res.data
+          this.number = res.num
+        }
       })
     }
   }

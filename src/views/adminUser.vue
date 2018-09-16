@@ -12,28 +12,28 @@
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop="userName"
+        prop="name"
         label="用户名"
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop="userNick"
+        prop="nickname"
         label="昵称"
         width="80"
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop="userSex"
+        prop="sex"
         label="性别"
         width="80"
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop="userLevel"
+        prop="level"
         label="等级">
       </el-table-column>
       <el-table-column
-        prop="userDesc"
+        prop="description"
         label="个性签名"
         show-overflow-tooltip>
       </el-table-column>
@@ -42,7 +42,7 @@
         width="80"
         show-overflow-tooltip>
         <template  slot-scope="scope">
-          <span>{{scope.row.userStatus === 1 ? '正常' : '封禁'}}</span>
+          <span>{{scope.row.status === 1 ? '封禁' : '正常'}}</span>
       </template>
       </el-table-column>
       <el-table-column
@@ -50,8 +50,8 @@
         width="80"
       >
       <template  slot-scope="scope">
-        <el-button type="text" size="small" v-show="scope.row.userStatus === 1" @click="_manageUser(scope.row.userId)">封禁</el-button>
-        <el-button type="text" size="small" v-show="scope.row.userStatus === 2" class="recover-btn" @click="_manageUser(scope.row.userId)">恢复</el-button>
+        <el-button type="text" size="small" v-show="scope.row.status === 0" @click="_manageUser(scope.row.id)">封禁</el-button>
+        <el-button type="text" size="small" v-show="scope.row.status === 1" class="recover-btn" @click="_manageUser(scope.row.id)">恢复</el-button>
       </template>
       </el-table-column>
     </el-table>
@@ -60,6 +60,7 @@
 
 <script>
 import {getAllUser, manageUser} from '@/js/api'
+import {userFliter} from '@/js/common'
 export default {
   data () {
     return {
@@ -73,14 +74,13 @@ export default {
   methods: {
     _getAlluser () {
       getAllUser().then(res => {
-        console.log(res.users)
-        this.users = res.users
+        this.users = userFliter(res.data)
         this.isLoading = false
       })
     },
     _manageUser (userId) {
       manageUser(userId).then(res => {
-        if (res.status === 1) {
+        if (res.status === 0) {
           this.$message.success('恢复成功')
         } else {
           this.$message.success('封禁成功')

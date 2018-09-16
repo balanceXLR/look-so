@@ -17,6 +17,7 @@ import MovieInfo from './movieDetail/movieInfo'
 import WriteReview from './movieDetail/writeReview'
 import MovieReview from './movieDetail/movieReview'
 import MovieMap from './movieDetail/movieMap'
+import {detailFliter} from '@/js/common'
 export default {
   components: {
     MovieInfo,
@@ -38,8 +39,8 @@ export default {
   },
   methods: {
     _getMovieDetail () {
-      getMovieDetail(this.movieId).then((res) => {
-        this.movieInfo = res.movieInfo
+      getMovieDetail(sessionStorage.getItem('movieId')).then((res) => {
+        this.movieInfo = detailFliter(res.data[0])
         // this.hotReviews = res.hotReviews
         this.isLoading = false
       })

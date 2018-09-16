@@ -13,8 +13,7 @@
         v-model="searchContent"
         :fetch-suggestions="querySearchAsync"
         placeholder="请输入内容"
-        @select="handleSelect2"
-        clearable></el-autocomplete>
+        @select="handleSelect2"></el-autocomplete>
       <el-button icon="el-icon-search" circle type="submit" @click="_search"></el-button>
     </div>
   </div>
@@ -24,8 +23,7 @@
 import {getAllMovieName} from '@/js/api'
 import {goSearchResult} from '@/js/router'
 import { mapMutations } from 'vuex'
-// import {resFilter} from '@/js/common'
-import event from '@/js/eventVue'
+// import event from '@/js/eventVue'
 export default {
   data () {
     return {
@@ -50,16 +48,10 @@ export default {
     ...mapMutations(['SEARCH']),
     ...mapMutations(['RESULT']),
     _search () {
-      // this.SEARCH(this.searchContent)
-      // this.RESULT(this.testResult)
-      event.$emit('keyword', this.searchContent)
-      console.log('发送' + this.searchContent)
+      // event.$emit('keyword', this.searchContent)
+      // console.log('发送' + this.searchContent)
+      sessionStorage.setItem('keyword', this.searchContent)
       goSearchResult()
-      // search(this.searchContent).then(res => {
-      // resFilter(res.data)
-      // this.RESULT(res.data)
-      // goSearchResult()
-      // })
     },
     handleSelect (key, keyPath) {
       // console.log(key, keyPath)
@@ -80,6 +72,10 @@ export default {
     },
     handleSelect2 (item) {
       // console.log(item)
+    },
+    handleClear () {
+      console.log(1)
+      this.searchContent = ''
     },
     _getAllMovieName () {
       getAllMovieName().then((res) => {

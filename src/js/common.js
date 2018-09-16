@@ -24,11 +24,27 @@ export function sex (number) {
     return '女'
   }
 }
-export function resFilter (arr) {
+export function movieFliter (arr) {
   for (let i = 0; i < arr.length; i++) {
+    if (arr[i].movie.hasOwnProperty('cover')) {
+      arr[i].movie.cover = baseUrl + arr[i].movie.cover
+    }
+  }
+  return arr
+}
+export function sliderFliter (arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].hasOwnProperty('slider')) {
+      arr[i].slider = baseUrl + arr[i].slider
+    }
     if (arr[i].hasOwnProperty('cover')) {
       arr[i].cover = baseUrl + arr[i].cover
     }
+  }
+  return arr
+}
+export function userFliter (arr) {
+  for (let i = 0; i < arr.length; i++) {
     if (arr[i].hasOwnProperty('head')) {
       arr[i].head = baseUrl + arr[i].head
     }
@@ -48,5 +64,26 @@ export function resFilter (arr) {
           break
       }
     }
+    if (arr[i].hasOwnProperty('sex')) {
+      switch (arr[i].sex) {
+        case 0 :
+          arr[i].sex = '男'
+          break
+        case 1:
+          arr[i].sex = '女'
+          break
+      }
+    }
+    if (arr[i].hasOwnProperty('time')) {
+      arr[i].time = arr[i].time.substring(0, 19)
+    }
   }
+  return arr
+}
+export function detailFliter (obj) {
+  if (obj.hasOwnProperty('cover')) {
+    console.log(1)
+    obj.cover = baseUrl + obj.cover
+  }
+  return obj
 }

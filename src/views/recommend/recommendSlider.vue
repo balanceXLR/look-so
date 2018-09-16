@@ -2,15 +2,16 @@
   <div class="recommend-slider">
     <el-carousel height="400px" v-loading="isLoading">
       <el-carousel-item v-for="(item,index) in sliderItems" :key="index">
-        <img class="slider-img" :src="item" alt="" @click="_goMovieDetail(item.movieId)">
+        <img class="slider-img" :src="item.slider" alt="" @click="_goMovieDetail(item.id)">
       </el-carousel-item>
     </el-carousel>
   </div>
 </template>
 
 <script>
-import {getRecommendSlider, baseUrl} from '@/js/api'
+import {getRecommendSlider} from '@/js/api'
 import {goMovieDetail} from '@/js/router'
+import {sliderFliter} from '@/js/common'
 export default {
   data () {
     return {
@@ -23,14 +24,12 @@ export default {
   },
   methods: {
     _goMovieDetail (movieId) {
+      console.log(movieId)
       goMovieDetail(movieId)
     },
     _getRecommendSlider () {
       getRecommendSlider().then((res) => {
-        this.sliderItems = res.data
-        for (let i = 0; i < res.data.length; i++) {
-          this.sliderItems[i] = baseUrl + res.data[i].slider
-        }
+        this.sliderItems = sliderFliter(res.data)
         // console.log(this.sliderItems)
         this.isLoading = false
       })

@@ -22,6 +22,7 @@ import bus from '@/js/bus'
 import { login } from '@/js/api'
 import { mapMutations } from 'vuex'
 import { doAlert } from '@/js/common'
+import {goMovieHome} from '@/js/router'
 export default {
   data () {
     return {
@@ -59,6 +60,7 @@ export default {
               this.LOGIN(res.data[0])
               doAlert(this, 'success', '登录成功')
               this.loginVisible = false
+              goMovieHome()
             } else {
               doAlert(this, 'warning', '登录失败')
             }

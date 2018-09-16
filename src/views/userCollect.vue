@@ -3,10 +3,10 @@
       <div class="movie-content" v-loading="isLoading">
         <movie-slot class="movie-info" v-for="(info,index) in movies" :key="index">
           <div class="cover-wrap">
-              <img class="movie-cover" :src="info.movieCover" alt="" @click="_goMovieDetail(info.movieId)">
+              <img class="movie-cover" :src="info.cover" alt="" @click="_goMovieDetail(info.id)">
           </div>
-          <span class="movie-name" @click="_goMovieDetail(info.movieId)">{{info.movieName}}</span>
-          <span class="movie-score">{{info.reviewScore}}</span>
+          <span class="movie-name" @click="_goMovieDetail(info.id)">{{info.name}}</span>
+          <!-- <span class="movie-score">{{info.score}}</span> -->
         </movie-slot>
       </div>
   </div>
@@ -17,6 +17,7 @@ import MovieSlot from '@/components/movieSlot'
 import { mapGetters } from 'vuex'
 import { getUserCollect } from '@/js/api'
 import { goMovieDetail } from '@/js/router'
+import {sliderFliter} from '@/js/common'
 export default {
   components: {
     MovieSlot
@@ -33,12 +34,16 @@ export default {
   methods: {
     _getUserCollect () {
       // console.log(this.user.userId)
-      getUserCollect(this.user.userId, 10).then(res => {
-        this.movies = res.userCollect
+      getUserCollect(this.user.userId, 1).then(res => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.movies.push(res.data[i].movie)
+        }
+        this.movies = sliderFliter(this.movies)
         this.isLoading = false
       })
     },
     _goMovieDetail (movieId) {
+      console.log(movieId)
       goMovieDetail(movieId)
     }
   },

@@ -59,7 +59,6 @@ export default {
             // resolve(that.location)
           })// 返回定位信息
           AMap.event.addListener(geolocation, 'error', (result) => {
-            console.log(result)
           }) // 返回定位出错信息
         })
         // this.map = map

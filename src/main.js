@@ -11,6 +11,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import AMap from 'vue-amap'
 import qs from 'qs'
+import {baseUrl} from '@/js/api'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
@@ -23,6 +24,10 @@ AMap.initAMapApiLoader({
   uiVersion: '1.0.11'
 })
 /* eslint-disable no-new */
+axios.interceptors.request.use(config => {
+  config.baseURL = baseUrl
+  return config
+})
 
 new Vue({
   el: '#app',

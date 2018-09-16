@@ -2,15 +2,15 @@
   <div class="search-result">
       <div class="result-left">
           <div class="result-title">搜索结果</div>
-          <div class="result-content">
+          <div class="result-content" v-loading="isLoading">
             <div class="result-item" v-for="(result, index) in resultContent" :key="index">
                 <div class="cover-wrap">
-                    <img class="cover" :src="result.cover" alt=""  @click="_goMovieDetail(result.id)">
+                    <img class="cover" :src="result.movie.cover" alt=""  @click="_goMovieDetail(result.movie.id)">
                 </div>
                 <div class="movie-info">
-                    <div class="name" @click="_goMovieDetail(result.id)">{{result.name}}</div>
-                    <div class="director">导演：{{result.dir}}</div>
-                    <div class="actors">主演：{{result.act}}</div>
+                    <div class="name" @click="_goMovieDetail(result.movie.id)">{{result.movie.name}}</div>
+                    <div class="director">导演：{{result.movie.dir}}</div>
+                    <div class="actors">主演：{{result.movie.act}}</div>
                     <div class="score">
                         <el-rate
                         class="score-icon"
@@ -20,7 +20,7 @@
                         text-color="#ff9900"
                         score-template="{value}">
                         </el-rate>
-                        <div class="score-num">{{result.score}}</div>
+                        <div class="score-num">{{result.grade === 'NaN' ? '暂无评分' : result.grade}}</div>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
             <el-pagination
                 class="page"
                 background
-                layout="prev, pager, next"
+                layout="total, prev, pager, next"
                 :page-size="pageSize"
                 :total="number"
                 :current-page="currentPage"
@@ -42,20 +42,24 @@
 
 <script>
 import {goMovieDetail} from '@/js/router'
-import event from '@/js/eventVue'
+// import event from '@/js/eventVue'
 import {search} from '@/js/api'
-import {resFilter} from '@/js/common'
+import {movieFliter} from '@/js/common'
 export default {
   data () {
     return {
       pageSize: 10,
       currentPage: 1,
       number: 0,
-      resultContent: []
+      resultContent: [],
+      isLoading: true
     }
   },
   created () {
     this._search()
+  },
+  updated () {
+    // console.log(2)
   },
   mounted () {
     // console.log(this.resultContent)
@@ -63,18 +67,20 @@ export default {
   methods: {
     currentChange (page) {
       this.currentPage = page
+      this._search()
     },
     _goMovieDetail (movieId) {
       goMovieDetail(movieId)
     },
     _search () {
-      event.$on('keyword', msg => {
-        console.log('接收' + msg)
-        search(msg).then(res => {
-          resFilter(res.data)
-          this.resultContent = res.data
-          console.log(this.resultContent)
-        })
+      search(this.currentPage, sessionStorage.getItem('keyword')).then(res => {
+        // for (let i = 0; i < res.data.list.length; i++) {
+        //   this.resultContent.push(res.data.list.length[i].movie)
+        // }
+
+        this.resultContent = movieFliter(res.data.list)
+        this.number = res.data.num
+        this.isLoading = false
       })
     }
   },
@@ -82,7 +88,11 @@ export default {
     scoreIcon () {
       let arr = []
       for (let i = 0; i < this.resultContent.length; i++) {
-        arr.push(this.resultContent[i].movieScore / 2)
+        if (this.resultContent[i].grade !== 'NaN') {
+          arr.push(this.resultContent[i].grade / 2)
+        } else {
+          arr.push(0)
+        }
       }
       //   console.log(this.resultInfo.lenth)
       //   for (let i = 0; i < this.resultInfo.lenth; i++) {

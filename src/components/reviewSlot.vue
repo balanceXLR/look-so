@@ -3,7 +3,7 @@
     <div class="review-left" v-show="isDetail">
       <movie-slot >
         <div class="cover-wrap">
-            <img class="movie-cover" :src="review.cover" alt="" @click="_goMovieDetail(review.movieId)">
+            <img class="movie-cover" :src="review.cover" alt="" @click="_goMovieDetail(review.id)">
         </div>
         <span class="movie-name" @click="_goMovieDetail(review.id)">{{review.name}}</span>
       </movie-slot>
@@ -57,12 +57,19 @@ export default {
     // console.log(this.review)
   },
   computed: {
-    score () {
-      return this.review.score / 2
+    score: {
+      get () {
+        return this.review.score / 2
+      },
+      set (val) {
+        return val
+      }
     },
     contentBrief () {
-      if (this.review.content) {
+      if (this.review.content.length > 220) {
         return this.review.content.substring(0, 220) + '...'
+      } else {
+        return this.review.content
       }
     },
     isDetail () {

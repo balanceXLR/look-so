@@ -3,7 +3,7 @@
     <login></login>
     <register></register>
     <home-nav></home-nav>
-    <router-view class="router-wrap"></router-view>
+    <router-view class="router-wrap" :key="$route.path + $route.query.t"></router-view>
   </div>
 </template>
 
