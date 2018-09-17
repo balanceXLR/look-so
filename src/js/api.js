@@ -147,8 +147,8 @@ export function getMovieAllReviews (movieId, page) {
 // param.append('reviewScore', this.reviewScore)
 // param.append('reviewCont', this.reviewCont)
 export function writeReview (param) {
-  // 测试用
-  return axios.get('/static/json/user.json').then((res) => {
+  console.log(param)
+  return axios.post('/user/review.json?' + qs.stringify(param)).then((res) => {
     if (res.status === 200) {
       // 登录成功返回data的一个user对象，失败返回空对象
       return Promise.resolve('评论成功')
@@ -160,17 +160,7 @@ export function writeReview (param) {
     }
   })
 }
-// 实际用
-// return axios.post('/review/writeReview', param).then((res) => {
-//   if (res.status === 200) {
-//     return Promise.resolve('评论成功')
-//   } else {
-//     Message({
-//       type: 'warning',
-//       text: '评论失败'
-//     })
-//   }
-// })
+
 // 获取用户详细信息
 export function getUserInfo (userId) {
   return axios.get('/static/json/userInfo.json', {
@@ -257,11 +247,9 @@ export function manageUser (userId) {
 }
 // 管理员获取所有电影
 export function getAdminMovie (currentPage) {
-  return axios.get('/static/json/adminMovie.json', {
-    params: {
-      page: currentPage
-    }
-  }).then(res => {
+  return axios.post('/manager/all_movie.json?' + qs.stringify({
+    page: currentPage
+  })).then(res => {
     return Promise.resolve(res.data)
   })
 }

@@ -21,12 +21,12 @@ export default {
       reviewCont: ''
     }
   },
-  props: {
-    currentMovie: {
-      default: 0,
-      type: Number
-    }
-  },
+  // props: {
+  //   currentMovie: {
+  //     default: 0,
+  //     type: Number
+  //   }
+  // },
   methods: {
     _writeReview () {
       console.log(this.user)
@@ -37,13 +37,16 @@ export default {
       } else if (this.reviewCont === '') {
         this.$message.warning('内容不能为空')
       } else {
-        let param = new URLSearchParams()
-        param.append('movieId', this.currentMovie)
-        param.append('userId', this.user.userId)
-        param.append('reviewScore', this.reviewScore)
-        param.append('reviewCont', this.reviewCont)
+        let param = {
+          'mid': sessionStorage.getItem('movieId'),
+          'uid': this.user.userId,
+          'score': this.reviewScore * 2,
+          'content': this.reviewCont
+        }
         writeReview(param).then((res) => {
           this.$message.success(res)
+          this.reviewCont = ''
+          this.reviewScore = 0
         })
       }
     }

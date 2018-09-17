@@ -12,7 +12,7 @@
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop="userNick"
+        prop="userName"
         label="评论人"
         width="80px"
         show-overflow-tooltip>
@@ -23,12 +23,12 @@
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop="reviewTime"
+        prop="time"
         label="评论时间"
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop="reviewCont"
+        prop="content"
         label="内容"
         show-overflow-tooltip>
       </el-table-column>
@@ -44,7 +44,7 @@
     <div class="review-footer">
       <el-pagination
         background
-        layout="prev, pager, next"
+        layout=" total, prev, pager, next"
         :page-size="pageSize"
         :total="number"
         :current-page="currentPage"
@@ -75,9 +75,17 @@ export default {
       this._getAllReviews()
     },
     _getAllReviews () {
-      getAllReviews('最新', this.currentPage).then(res => {
-        this.reviews = res.allReviews
-        this.number = res.number
+      getAllReviews(0, this.currentPage).then(res => {
+        for (let item of res.data.list) {
+          this.reviews.push({
+            userName: item.user.name,
+            nick: item.user.nick,
+            movieName: item.movie.name,
+            time: item.time,
+            content: item.content
+          })
+        }
+        this.number = res.data.num
         this.isLoading = false
       })
     },

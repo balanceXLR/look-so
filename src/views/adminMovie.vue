@@ -17,27 +17,27 @@
         show-overflow-tooltip>
         <template  slot-scope="scope">
           <div class="cover-wrap">
-            <img :src="scope.row.movieCover" alt="" class="movie-cover">
+            <img :src="scope.row.cover" alt="" class="movie-cover">
           </div>
       </template>
       </el-table-column>
       <el-table-column
-        prop="movieName"
+        prop="name"
         label="名称"
         show-overflow-tooltip>
       </el-table-column>
       <el-table-column
-        prop="movieSort"
+        prop="sort"
         label="类别"
         show-overflow-tooltip>
       </el-table-column>
-      <el-table-column
-        prop="reviewScore"
+      <!-- <el-table-column
+        prop="score"
         label="评分"
         show-overflow-tooltip>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
-        prop="movieShow"
+        prop="show"
         label="上映时间">
       </el-table-column>
       <el-table-column
@@ -45,7 +45,7 @@
         width="80"
         show-overflow-tooltip>
         <template  slot-scope="scope">
-          <span>{{scope.row.movieStatus === 1 ? '正常' : '下架'}}</span>
+          <span>{{scope.row.status === 1 ? '正常' : '下架'}}</span>
       </template>
       </el-table-column>
       <el-table-column
@@ -53,8 +53,8 @@
         width="80"
       >
       <template  slot-scope="scope">
-        <el-button type="text" size="small" v-show="scope.row.movieStatus === 1" @click="_manageMovie(scope.row.movieId)">上架</el-button>
-        <el-button type="text" size="small" v-show="scope.row.movieStatus === 2" class="recover-btn" @click="_manageMovie(scope.row.movieId)">下架</el-button>
+        <el-button type="text" size="small" v-show="scope.row.status === 0" @click="_manageMovie(scope.row.id)">上架</el-button>
+        <el-button type="text" size="small" v-show="scope.row.status === 1" class="recover-btn" @click="_manageMovie(scope.row.id)">下架</el-button>
       </template>
       </el-table-column>
     </el-table>
@@ -73,6 +73,7 @@
 
 <script>
 import {getAdminMovie, manageMovie} from '@/js/api'
+import {sliderFliter} from '@/js/common'
 export default {
   data () {
     return {
@@ -93,7 +94,7 @@ export default {
     },
     _getAdminMovie () {
       getAdminMovie(this.currentPage).then(res => {
-        this.movies = res.movies
+        this.movies = sliderFliter(res.data.list)
         this.number = res.number
         this.isLoading = false
       })
