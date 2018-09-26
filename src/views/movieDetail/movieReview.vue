@@ -3,12 +3,12 @@
       <div class="hot">
         <div class="title">热门影评</div>
         <review-slot v-for="(review,index) in hotReviews" :key="index" :review="review"></review-slot>
-        <div v-show="hotReviews.length === 0">暂无影评</div>
+        <no-result v-show="isShow"></no-result>
       </div>
       <div class="all">
         <div class="title">所有影评</div>
         <review-slot v-for="(review,index) in allReviews" :key="index" :review="review"></review-slot>
-        <div v-show="allReviews.length === 0">暂无影评</div>
+        <no-result v-show="isShow"></no-result>
         <!-- <div class="page">
           <el-pagination
             background
@@ -28,9 +28,11 @@
 import ReviewSlot from '@/components/reviewSlot'
 import {getMovieAllReviews} from '@/js/api'
 import {userFliter} from '@/js/common'
+import NoResult from '@/components/noResult'
 export default {
   components: {
-    ReviewSlot
+    ReviewSlot,
+    NoResult
   },
   data () {
     return {
@@ -38,7 +40,8 @@ export default {
       currentPage: 1,
       allReviews: [],
       hotReviews: [],
-      number: 0
+      number: 0,
+      isShow: false
     }
   },
   props: {
@@ -60,6 +63,8 @@ export default {
           this.hotReviews = res.data.splice(0, 3)
           this.allReviews = res.data
           this.number = res.num
+        } else {
+          this.isShow = true
         }
       })
     }

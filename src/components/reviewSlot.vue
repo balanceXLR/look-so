@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="content" ref="content">{{contentBrief}}</div>
-      <span class="open" @click="showAllCont(review.content)">{{openInfo}}</span>
+      <span class="open" @click="showAllCont(review.content)" v-show="review.content.length > 220">{{openInfo}}</span>
     </div>
   </div>
 </template>
@@ -119,6 +119,7 @@ export default {
     margin-right: 20px;
   }
   .review-right {
+    flex: 1;
     display: flex;
     flex-direction: column;
     .top {

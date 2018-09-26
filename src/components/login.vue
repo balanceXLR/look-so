@@ -61,6 +61,8 @@ export default {
               doAlert(this, 'success', '登录成功')
               this.loginVisible = false
               goMovieHome()
+            } else if (res.code === '4003') {
+              doAlert(this, 'warning', '用户已被封禁')
             } else {
               doAlert(this, 'warning', '登录失败')
             }

@@ -45,7 +45,7 @@
         width="80"
         show-overflow-tooltip>
         <template  slot-scope="scope">
-          <span>{{scope.row.status === 1 ? '正常' : '下架'}}</span>
+          <span>{{scope.row.status === 0 ? '正常' : '下架'}}</span>
       </template>
       </el-table-column>
       <el-table-column
@@ -53,8 +53,8 @@
         width="80"
       >
       <template  slot-scope="scope">
-        <el-button type="text" size="small" v-show="scope.row.status === 0" @click="_manageMovie(scope.row.id)">上架</el-button>
-        <el-button type="text" size="small" v-show="scope.row.status === 1" class="recover-btn" @click="_manageMovie(scope.row.id)">下架</el-button>
+        <el-button type="text" size="small" v-show="scope.row.status === 0" @click="_manageMovie(scope.row.id, scope.row.status)">下架</el-button>
+        <el-button type="text" size="small" v-show="scope.row.status === 1" class="recover-btn" @click="_manageMovie(scope.row.id, scope.row.status)">上架</el-button>
       </template>
       </el-table-column>
     </el-table>
@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import {getAdminMovie, manageMovie} from '@/js/api'
+import {getAdminMovie, manageMovie, manageMovie2} from '@/js/api'
 import {sliderFliter} from '@/js/common'
 export default {
   data () {
@@ -95,18 +95,22 @@ export default {
     _getAdminMovie () {
       getAdminMovie(this.currentPage).then(res => {
         this.movies = sliderFliter(res.data.list)
-        this.number = res.number
+        this.number = res.data.num
         this.isLoading = false
       })
     },
-    _manageMovie (movieId) {
-      manageMovie(movieId).then(res => {
-        if (res.status === 1) {
-          this.$message.success('上架成功')
-        } else {
+    _manageMovie (movieId, status) {
+      if (status === 0) {
+        manageMovie(movieId).then(res => {
           this.$message.success('下架成功')
-        }
-      })
+          this._getAdminMovie()
+        })
+      } else if (status === 1) {
+        manageMovie2(movieId).then(res => {
+          this.$message.success('上架成功')
+          this._getAdminMovie()
+        })
+      }
     }
   }
 }

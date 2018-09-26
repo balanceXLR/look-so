@@ -27,7 +27,7 @@ export default {
   },
   data () {
     return {
-      sorts: ['喜剧', '科幻', '悬疑', '爱情', '治愈', '动作', '更多'],
+      sorts: ['喜剧', '科幻', '悬疑', '爱情', '冒险', '动作', '更多'],
       movies: [],
       isLoading: true
     }

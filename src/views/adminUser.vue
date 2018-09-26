@@ -50,8 +50,8 @@
         width="80"
       >
       <template  slot-scope="scope">
-        <el-button type="text" size="small" v-show="scope.row.status === 0" @click="_manageUser(scope.row.id)">封禁</el-button>
-        <el-button type="text" size="small" v-show="scope.row.status === 1" class="recover-btn" @click="_manageUser(scope.row.id)">恢复</el-button>
+        <el-button type="text" size="small" v-show="scope.row.status === 0" @click="_manageUser(scope.row.id, scope.row.status)">封禁</el-button>
+        <el-button type="text" size="small" v-show="scope.row.status === 1" class="recover-btn" @click="_manageUser(scope.row.id, scope.row.status)">恢复</el-button>
       </template>
       </el-table-column>
     </el-table>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import {getAllUser, manageUser} from '@/js/api'
+import {getAllUser, manageUser, manageUser2} from '@/js/api'
 import {userFliter} from '@/js/common'
 export default {
   data () {
@@ -78,14 +78,18 @@ export default {
         this.isLoading = false
       })
     },
-    _manageUser (userId) {
-      manageUser(userId).then(res => {
-        if (res.status === 0) {
-          this.$message.success('恢复成功')
-        } else {
+    _manageUser (userId, status) {
+      if (status === 0) {
+        manageUser(userId).then(res => {
           this.$message.success('封禁成功')
-        }
-      })
+          this._getAlluser()
+        })
+      } else if (status === 1) {
+        manageUser2(userId).then(res => {
+          this.$message.success('恢复成功')
+          this._getAlluser()
+        })
+      }
     }
   }
 }

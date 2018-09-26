@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'element-ui'
 // 用户登录
-export const baseUrl = 'http://192.168.1.102:8080/lookso'
+export const baseUrl = 'http://192.168.1.105:8080/lookso'
 // const config = {
 //   headers: {
 //     'Access-Control-Allow-Origin': '*',
@@ -177,8 +177,13 @@ export function getUserInfo (userId) {
 // param.append('userNick', this.userInfo.userNick)
 // param.append('userSex', this.userInfo.userSex)
 // param.append('userDesc', this.userInfo.userDesc)
-export function editUser (userInfo) {
-  return axios.post('/user/editUser', userInfo).then(res => {
+export function editUser (id, nickname, sex, desc) {
+  return axios.post('/user/update_user.json?' + qs.stringify({
+    id: id,
+    nickname: nickname,
+    sex: sex,
+    desc: desc
+  })).then(res => {
     return Promise.resolve(res.data)
   })
 }
@@ -200,49 +205,27 @@ export function getUserReview (userId, page) {
     return Promise.resolve(res.data)
   })
 }
-// 管理员上传电影 传参如下
-// param.append('cover', xxx)
-// param.append('name', xxx)
-// param.append('show', xxx)
-// param.append('time', xxx)
-// param.append('sort', xxx)
-// param.append('ctry', xxx)
-// param.append('dir', xxx)
-// param.append('act', xxx)
-// param.append('intro', xxx)
-export function uploadMovie (param) {
-  return axios.post('/admin/uploadMovie', param).then(res => {
-    if (res.status === 200) {
-      Message({
-        type: 'success',
-        text: '上传成功'
-      })
-    } else {
-      Message({
-        type: 'warning',
-        text: '上传失败'
-      })
-    }
-  })
-}
+
 // 管理员获取所有用户
 export function getAllUser () {
   return axios.post('/manager/all_user.json').then(res => {
     return Promise.resolve(res.data)
   })
 }
-// 封禁或恢复用户
+// 封禁
 export function manageUser (userId) {
-  return axios.post('/admin/manageUser').then(res => {
-    if (res.status === 200) {
-      // data中返回一个status：用户封禁或恢复后的状态（1或2）
-      return Promise.resolve(res.data)
-    } else {
-      Message({
-        type: 'warning',
-        text: '操作失败'
-      })
-    }
+  return axios.post('/manager/forbidden_user.json?' + qs.stringify({
+    id: userId
+  })).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+// 恢复
+export function manageUser2 (userId) {
+  return axios.post('/manager/recover_user.json?' + qs.stringify({
+    id: userId
+  })).then(res => {
+    return Promise.resolve(res.data)
   })
 }
 // 管理员获取所有电影
@@ -253,18 +236,20 @@ export function getAdminMovie (currentPage) {
     return Promise.resolve(res.data)
   })
 }
-// 上架或下架电影
-export function manageMovie (userId) {
-  return axios.post('/admin/manageMovie').then(res => {
-    if (res.status === 200) {
-      // data中返回一个status：用户封禁或恢复后的状态（1或2）
-      return Promise.resolve(res.data)
-    } else {
-      Message({
-        type: 'warning',
-        text: '操作失败'
-      })
-    }
+// 下架
+export function manageMovie (movieId) {
+  return axios.post('/manager/forbidden_movie.json?' + qs.stringify({
+    id: movieId
+  })).then(res => {
+    return Promise.resolve(res.data)
+  })
+}
+// 上架
+export function manageMovie2 (movieId) {
+  return axios.post('/manager/recover_movie.json?' + qs.stringify({
+    id: movieId
+  })).then(res => {
+    return Promise.resolve(res.data)
   })
 }
 // 管理员删除影评

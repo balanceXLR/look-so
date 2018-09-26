@@ -27,7 +27,10 @@ export function goReview () {
 export function goUserHome (type) {
   if (type === 0) {
     router.push({
-      name: 'userHome'
+      name: 'userHome',
+      query: {
+        t: Date.now()
+      }
     })
   } else if (type === 1) {
     router.push({

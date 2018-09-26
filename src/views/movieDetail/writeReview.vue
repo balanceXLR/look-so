@@ -21,12 +21,6 @@ export default {
       reviewCont: ''
     }
   },
-  // props: {
-  //   currentMovie: {
-  //     default: 0,
-  //     type: Number
-  //   }
-  // },
   methods: {
     _writeReview () {
       console.log(this.user)
@@ -47,6 +41,7 @@ export default {
           this.$message.success(res)
           this.reviewCont = ''
           this.reviewScore = 0
+          this.$emit('isWrite', true)
         })
       }
     }

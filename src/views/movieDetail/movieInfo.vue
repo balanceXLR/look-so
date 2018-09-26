@@ -17,10 +17,11 @@
         <div class="score-wrap">
             <div class="title">Look-So评分</div>
             <div class="star-wrap">
-                <div class="score-num">{{otherInfo.grade}}</div>
+                <div class="score-num">{{otherInfo.grade !== 0 ? otherInfo.grade : '暂无评分'}}</div>
                 <el-rate
                     v-model="score"
-                    disabled>
+                    disabled
+                    v-show="otherInfo.grade !== 0">
                 </el-rate>
             </div>
             <div class="people-num">{{otherInfo.num}}人评价</div>

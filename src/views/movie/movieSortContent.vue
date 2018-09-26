@@ -14,7 +14,7 @@
           <span class="movie-name" @click="_goMovieDetail(info.movie.id)">{{info.movie.name.length > 8 ? info.movie.name.substring(0,7) + '...' : info.movie.name}}</span>
           <span class="movie-score">{{ info.grade === 0 ? '暂无评分' : info.grade}}</span>
         </movie-slot>
-        <div v-show="movies.length === 0">暂无数据</div>
+        <no-result v-show="isShow"></no-result>
       </div>
       <div class="movie-footer">
         <el-pagination
@@ -35,9 +35,11 @@ import {getSortMovies} from '@/js/api'
 import {goMovieDetail} from '@/js/router'
 import { movieFliter } from '@/js/common'
 import bus from '@/js/bus'
+import NoResult from '@/components/noResult'
 export default {
   components: {
-    MovieSlot
+    MovieSlot,
+    NoResult
   },
   data () {
     return {
@@ -47,7 +49,8 @@ export default {
       currentPage: 1,
       number: 0,
       pageSize: 20,
-      isLoading: true
+      isLoading: true,
+      isShow: false
     }
   },
   created () {
@@ -123,6 +126,7 @@ export default {
         } else {
           this.movies = []
           this.number = 0
+          this.isShow = true
         }
         this.isLoading = false
       })

@@ -8,6 +8,7 @@
           <span class="movie-name" @click="_goMovieDetail(info.id)">{{info.name}}</span>
           <!-- <span class="movie-score">{{info.score}}</span> -->
         </movie-slot>
+        <no-result v-show="isShow"></no-result>
       </div>
   </div>
 </template>
@@ -18,14 +19,17 @@ import { mapGetters } from 'vuex'
 import { getUserCollect } from '@/js/api'
 import { goMovieDetail } from '@/js/router'
 import {sliderFliter} from '@/js/common'
+import NoResult from '@/components/noResult'
 export default {
   components: {
-    MovieSlot
+    MovieSlot,
+    NoResult
   },
   data () {
     return {
       movies: [],
-      isLoading: true
+      isLoading: true,
+      isShow: false
     }
   },
   created () {
@@ -35,10 +39,14 @@ export default {
     _getUserCollect () {
       // console.log(this.user.userId)
       getUserCollect(this.user.userId, 1).then(res => {
-        for (let i = 0; i < res.data.length; i++) {
-          this.movies.push(res.data[i].movie)
-        }
+        if(res.code === '0000') {
+          for (let i = 0; i < res.data.length; i++) {
+            this.movies.push(res.data[i].movie)
+          }
         this.movies = sliderFliter(this.movies)
+        } else {
+          this.isShow = true
+        }
         this.isLoading = false
       })
     },

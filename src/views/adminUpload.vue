@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-upload">
+  <div class="admin-upload" v-loading="isLoading">
     <div class="upload-left">
       <el-upload
       class="avatar-uploader"
@@ -10,6 +10,7 @@
       :on-preview="handlePictureCardPreview"
       :before-remove="beforeRemove"
       :limit="1"
+      :file-list="fileList"
       >
       <img v-if="imageUrl" :src="imageUrl" class="avatar">
       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -70,15 +71,16 @@
 </template>
 
 <script>
-import {uploadMovie} from '@/js/api'
+// import {uploadMovie} from '@/js/api'
+import {dateFtt} from '@/js/common'
+import qs from 'qs'
 export default {
   data () {
     return {
       imageUrl: '',
       movie: {
-
       },
-      param: new FormData(),
+      isLoading: false,
       count: 0,
       fileList: [],
       dialogVisible: false,
@@ -109,6 +111,15 @@ export default {
       }, {
         value: '爱情',
         label: '爱情'
+      }, {
+        value: '悬疑',
+        label: '悬疑'
+      }, {
+        value: '冒险',
+        label: '冒险'
+      }, {
+        value: '动作',
+        label: '动作'
       }]
     }
   },
@@ -129,21 +140,32 @@ export default {
       this.imageUrl = ''
     },
     _uploadMovie () {
-      for (let i in this.movie) {
-        this.param.append(i, this.movie[i])
-      }
-      for (let i = 0; i < this.fileList.length; i++) {
-        this.count++
-        this.param.append('cover', this.fileList[i].raw)
-      }
-      uploadMovie(this.param).then(res => {
-        this.param = new FormData()
-        this.movie = {}
-        this.fileList = []
-        this.imageUrl = ''
+      let form = new FormData()
+      form.append('cover', this.fileList[0].raw)
+      this.isLoading = true
+      this.$axios.post('/manager/upload_movie.json?' + qs.stringify({
+        name: this.movie.name,
+        show: dateFtt('yyyy-MM-dd-hh-mm-ss', this.movie.show),
+        time: this.movie.time,
+        sort: this.movie.sort,
+        ctry: this.movie.ctry,
+        dir: this.movie.dir,
+        act: this.movie.act,
+        intro: this.movie.intro
+      }), form, {
+        'Content-Type': 'multipart/form-data'
+      }).then(res => {
+        if (res.data.code === '0000') {
+          this.movie = {}
+          this.imageUrl = ''
+          this.fileList = []
+          this.isLoading = false
+          this.$message.success('上传成功')
+        } else {
+          this.$message.warning('上传失败')
+        }
       })
     }
-
   }
 }
 

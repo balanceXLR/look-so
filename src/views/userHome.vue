@@ -1,7 +1,9 @@
 <template>
   <div class="user-home">
     <user-nav class="user-nav"></user-nav>
-    <router-view class="router-wrap"></router-view>
+    <keep-alive>
+      <router-view class="router-wrap"></router-view>
+    </keep-alive>
   </div>
 </template>
 

@@ -2,8 +2,8 @@
   <div class="movie-detail" v-loading="isLoading">
     <div class="detail-left">
       <movie-info class="movie-info" :movieInfo="movieInfo" ></movie-info>
-      <write-review class="write-review"></write-review>
-      <movie-review class="movie-review"  :movieId="movieId"></movie-review>
+      <write-review class="write-review"  @isWrite="updateReview"></write-review>
+      <movie-review class="movie-review"  :movieId="movieId"  ref="movieReview"></movie-review>
     </div>
     <div class="detail-right">
       <movie-map :movieName="movieName"></movie-map>
@@ -44,6 +44,9 @@ export default {
         // this.hotReviews = res.hotReviews
         this.isLoading = false
       })
+    },
+    updateReview (val) {
+      this.$refs.movieReview._getMovieAllReviews()
     }
   },
   computed: {
