@@ -60,9 +60,11 @@ export default {
       getMovieAllReviews(sessionStorage.getItem('movieId')).then(res => {
         if (res.data) {
           userFliter(res.data)
+          let all = res.data.concat([])
           this.hotReviews = res.data.splice(0, 3)
-          this.allReviews = res.data
+          this.allReviews = all
           this.number = res.num
+          this.isShow = false
         } else {
           this.isShow = true
         }

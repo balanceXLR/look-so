@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'element-ui'
 // 用户登录
-export const baseUrl = 'http://192.168.1.105:8080/lookso'
+export const baseUrl = 'http://192.168.1.100:8080/lookso'
 // const config = {
 //   headers: {
 //     'Access-Control-Allow-Origin': '*',

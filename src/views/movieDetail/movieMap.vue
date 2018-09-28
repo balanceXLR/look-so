@@ -19,6 +19,10 @@ export default {
     movieName: {
       type: String,
       default: ''
+    },
+    movieShow: {
+      type: String,
+      default: ''
     }
   },
   components: {
@@ -82,7 +86,13 @@ export default {
         // 关键字查询
         // placeSearch.search('电影院')
         // 查找周边
-        placeSearch.searchNearBy(that.movieName, cpoint, 5000, function (status, result) {
+        console.log('name' + that.movieName)
+        let _date = that.movieShow.replace(/-+/g, '')
+        let _name = ''
+        if (_date < 20180820) {
+          _name = '搜不出来的'
+        }
+        placeSearch.searchNearBy(_name, cpoint, 5000, function (status, result) {
 
         })
       })

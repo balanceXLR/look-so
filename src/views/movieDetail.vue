@@ -6,7 +6,7 @@
       <movie-review class="movie-review"  :movieId="movieId"  ref="movieReview"></movie-review>
     </div>
     <div class="detail-right">
-      <movie-map :movieName="movieName"></movie-map>
+      <movie-map :movieName="movieName" :movieShow="movieShow"></movie-map>
     </div>
   </div>
 </template>
@@ -31,7 +31,8 @@ export default {
       hotReviews: [],
       allReviews: [],
       isLoading: true,
-      movieName: ''
+      movieName: '',
+      movieShow: ''
     }
   },
   created () {
@@ -61,7 +62,8 @@ export default {
   },
   watch: {
     movieInfo (val) {
-      this.movieName = val.movieName
+      this.movieName = val.name
+      this.movieShow = val.show
     }
   }
 }
