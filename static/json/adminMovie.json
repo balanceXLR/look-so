@@ -1,0 +1,23 @@
+{
+    "movies" : [
+        {
+            "movieSort": "热门",
+            "movieId": 1,
+            "movieStatus": 1,
+            "movieName": "我不是药神",
+            "movieCover": "/static/cover/cover1.png",
+            "reviewScore": 10,
+            "movieShow": "2018/7/1"
+        },
+        {
+            "movieSort": "热门",
+            "movieId": 1,
+            "movieStatus": 2,
+            "movieName": "我不是药神",
+            "movieCover": "/static/cover/cover1.png",
+            "reviewScore": 10,
+            "movieShow": "2018/7/1"
+        }
+    ],
+    "number": 100
+}

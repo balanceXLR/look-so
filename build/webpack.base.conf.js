@@ -40,7 +40,8 @@ module.exports = {
   },
   module: {
     rules: [
-      ...(config.dev.useEslint ? [createLintingRule()] : []),
+      // ...(config.dev.useEslint ? [createLintingRule()] : []),
+      ...(config.dev.useEslint ? [] : []),
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -76,6 +77,10 @@ module.exports = {
         }
       }
     ]
+  },
+  externals: {
+    'AMap': 'AMap',
+    'AMapUI': 'AMapUI'
   },
   node: {
     // prevent webpack from injecting useless setImmediate polyfill because Vue

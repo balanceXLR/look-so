@@ -1,14 +1,13 @@
 import router from '@/router'
 
 export function goMovieDetail (movieId) {
-  localStorage.removeItem('currentMovie')
+  sessionStorage.setItem('movieId', movieId)
   router.push({
     name: 'movieDetail',
-    param: {
+    params: {
       movieId: movieId
     }
   })
-  localStorage.setItem('currentMovie', movieId)
 }
 export function goRank () {
   router.push({
@@ -23,5 +22,32 @@ export function goMovie () {
 export function goReview () {
   router.push({
     name: 'review'
+  })
+}
+export function goUserHome (type) {
+  if (type === 0) {
+    router.push({
+      name: 'userHome',
+      query: {
+        t: Date.now()
+      }
+    })
+  } else if (type === 1) {
+    router.push({
+      name: 'adminHome'
+    })
+  }
+}
+export function goMovieHome () {
+  router.push({
+    name: 'recommend'
+  })
+}
+export function goSearchResult () {
+  router.push({
+    name: 'searchResult',
+    query: {
+      t: Date.now()
+    }
   })
 }

@@ -1,14 +1,13 @@
 <template>
   <div class="recommend-movies">
-    <el-tabs type="border-card" @tab-click="isMore" v-loading="isLoading">
-        <el-tab-pane v-for="(movie,index) in recommendMovies" :key="index" :label="movie.sort" lazy>
+    <el-tabs type="border-card" @tab-click="isMore" >
+        <el-tab-pane v-for="(movie,index) in sorts" :key="index" :label="movie" lazy>
             <div class="info-wrapper">
-                <movie-slot class="movie-info" v-for="(info,index) in movie.info" :key="index">
+                <movie-slot class="movie-info" v-for="(info,index) in movies" :key="index">
                     <div class="cover-wrap">
-                        <img class="movie-cover" :src="info.movieCover" alt="" @click="_goMovieDetail(info.movieId)">
+                        <img class="movie-cover" :src="info.cover" alt="" @click="_goMovieDetail(info.id)">
                     </div>
-                    <span class="movie-name" @click="_goMovieDetail(info.movieId)">{{info.movieName}}</span>
-                    <span class="movie-score">{{info.reviewScore}}</span>
+                    <span class="movie-name" @click="_goMovieDetail(info.id)">{{info.name.length > 8 ? info.name.substring(0,7) + '...' : info.name}}</span>
                 </movie-slot>
             </div>
 
@@ -21,72 +20,33 @@
 import MovieSlot from '@/components/movieSlot'
 import {getRecommendMovies} from '@/js/api'
 import {goMovie, goMovieDetail} from '@/js/router'
-const MORE_INDEX = 'tab-7'
+import {sliderFliter} from '@/js/common'
 export default {
   components: {
     MovieSlot
   },
   data () {
     return {
-      recommendMovies: [
-        {
-          sort: '热门',
-          info: []
-        },
-        {
-          sort: '国语',
-          info: []
-        },
-        {
-          sort: '喜剧',
-          info: []
-        },
-        {
-          sort: '科幻',
-          info: []
-        },
-        {
-          sort: '悬疑',
-          info: []
-        },
-        {
-          sort: '爱情',
-          info: []
-        },
-        {
-          sort: '治愈',
-          info: []
-        },
-        {
-          sort: '更多',
-          info: []
-        }
-      ],
+      sorts: ['喜剧', '科幻', '悬疑', '爱情', '冒险', '动作', '更多'],
+      movies: [],
       isLoading: true
-
     }
   },
   created () {
-    this._getRecommendMovies()
+    this._getRecommendMovies('喜剧')
   },
   methods: {
     isMore (tab, event) {
-      if (event.target.getAttribute('id') === MORE_INDEX) {
+      console.log(tab.label)
+      if (tab.label === '更多') {
         goMovie()
+      } else {
+        this._getRecommendMovies(tab.label)
       }
     },
-    _getRecommendMovies () {
-      getRecommendMovies().then((res) => {
-        let inner = this.recommendMovies
-        let out = res.recommendMovies
-        // console.log(out)
-        for (let i = 0; i < inner.length; i++) {
-          for (let j = 0; j < out.length; j++) {
-            if (inner[i].sort === out[j].movieSort) {
-              inner[i].info.push(out[j])
-            }
-          }
-        }
+    _getRecommendMovies (sort) {
+      getRecommendMovies(sort).then((res) => {
+        this.movies = sliderFliter(res.data)
         this.isLoading = false
         // console.log(this.recommendMovies)
       })

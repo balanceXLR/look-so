@@ -1,0 +1,26 @@
+{
+    "resultInfo": {
+        "resultContent": [
+          {
+            "movieId": 1,
+            "movieCover": "/static/cover/cover1.png",
+            "movieName": "我不是药神",
+            "movieDir": "文牧野",
+            "movieAct": " 徐峥 / 王传君 / 周一围 / 谭卓 / 章宇 /",
+            "movieShow": "2017-07-05",
+            "movieScore": 9.7
+          },
+          {
+            "movieId": 1,
+            "movieCover": "/static/cover/cover1.png",
+            "movieName": "我不是药神",
+            "movieDir": "文牧野",
+            "movieAct": " 徐峥 / 王传君 / 周一围 / 谭卓 / 章宇 /",
+            "movieShow": "2017-07-05",
+            "movieScore": 5
+          }
+          
+        ],
+        "number": 200
+      }
+}

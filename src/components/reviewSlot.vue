@@ -1,26 +1,26 @@
 <template>
   <div class="review-slot" ref="reviewSlot">
-    <div class="review-left">
-      <movie-slot v-show="isDetail">
+    <div class="review-left" v-show="isDetail">
+      <movie-slot >
         <div class="cover-wrap">
-            <img class="movie-cover" :src="review.movieCover" alt="" @click="_goMovieDetail(review.movieId)">
+            <img class="movie-cover" :src="review.cover" alt="" @click="_goMovieDetail(review.id)">
         </div>
-        <span class="movie-name" @click="_goMovieDetail(review.movieId)">{{review.movieName}}</span>
+        <span class="movie-name" @click="_goMovieDetail(review.id)">{{review.name}}</span>
       </movie-slot>
     </div>
     <div class="review-right">
       <div class="top">
-        <span class="nick">{{review.userNick}}</span>
-        <img class="head" :src="review.userHead" alt="">
+        <span class="nick">{{review.user}}</span>
+        <img class="head" :src="review.head" alt="">
         <span class="score">
           <el-rate
             v-model="score"
             disabled>
           </el-rate>
-          <span class="score-num">{{review.reviewScore}}</span>
+          <span class="score-num">{{review.score}}</span>
         </span>
-        <span class="level">{{review.userLevel}}</span>
-        <span class="time">{{review.reviewTime}}</span>
+        <span class="level">{{review.level}}</span>
+        <span class="time">{{review.time}}</span>
         <div class="zan">
           <img class="zan-icon" src="/static/img/zan.png" alt="" v-show="review.isZan" @click="userZan">
           <img class="zan-icon" src="/static/img/zan2.png" alt="" v-show="review.isZan === false" @click="userZan">
@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="content" ref="content">{{contentBrief}}</div>
-      <span class="open" @click="showAllCont(review.reviewCont)">{{openInfo}}</span>
+      <span class="open" @click="showAllCont(review.content)" v-show="review.content.length > 220">{{openInfo}}</span>
     </div>
   </div>
 </template>
@@ -36,6 +36,7 @@
 <script>
 import MovieSlot from './movieSlot'
 import {goMovieDetail} from '@/js/router'
+// import {level} from '@/js/common'
 export default {
   components: {
     MovieSlot
@@ -56,14 +57,23 @@ export default {
     // console.log(this.review)
   },
   computed: {
-    score () {
-      return this.review.reviewScore / 2
+    score: {
+      get () {
+        return this.review.score / 2
+      },
+      set (val) {
+        return val
+      }
     },
     contentBrief () {
-      return this.review.reviewCont.substring(0, 220) + '...'
+      if (this.review.content.length > 220) {
+        return this.review.content.substring(0, 220) + '...'
+      } else {
+        return this.review.content
+      }
     },
     isDetail () {
-      if (this.review.movieCover) {
+      if (this.review.cover) {
         return true
       } else {
         return false
@@ -94,6 +104,9 @@ export default {
       goMovieDetail(movieId)
     }
   }
+  // computed: {
+
+  // }
 }
 
 </script>
@@ -103,12 +116,12 @@ export default {
   display: flex;
   margin-bottom: 20px;
   .review-left {
-
+    margin-right: 20px;
   }
   .review-right {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
     .top {
       display: flex;
       align-items: center;

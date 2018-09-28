@@ -14,79 +14,56 @@
         :fetch-suggestions="querySearchAsync"
         placeholder="请输入内容"
         @select="handleSelect2"></el-autocomplete>
-      <el-button icon="el-icon-search" circle type="submit" @click="search"></el-button>
+      <el-button icon="el-icon-search" circle type="submit" @click="_search"></el-button>
     </div>
   </div>
 </template>
 
 <script>
 import {getAllMovieName} from '@/js/api'
+import {goSearchResult} from '@/js/router'
+import { mapMutations } from 'vuex'
+// import event from '@/js/eventVue'
 export default {
   data () {
     return {
-      // activeIndex: this.$route.name,
       movies: [],
       restaurants: [],
       tiemout: null,
       searchContent: '',
-      resultInfo: {
-        resultContent: [
-          {
-            movieId: 1,
-            movieCover: '/static/cover/cover1.png',
-            movieName: '我不是药神',
-            movieDir: '文牧野',
-            movieAct: ' 徐峥 / 王传君 / 周一围 / 谭卓 / 章宇 /',
-            movieShow: '2017-07-05',
-            movieScore: 9.7
-          },
-          {
-            movieId: 2,
-            movieCover: '/static/cover/cover1.png',
-            movieName: '我不是药神',
-            movieDir: '文牧野',
-            movieAct: ' 徐峥 / 王传君 / 周一围 / 谭卓 / 章宇 /',
-            movieShow: '2017-07-05',
-            movieScore: 5
-          }
-        ],
-        number: 200
-      }
-
+      testResult: [
+        {
+          name: 1
+        },
+        {
+          name: 2
+        }
+      ]
     }
   },
   created () {
-    this._getAllMovieName()
     // console.log(this.activeIndex)
   },
   methods: {
-    search () {
-      localStorage.removeItem('searchResult')
-      // 后台搜索
-      // this.$axios.post('/search', {
-      //   searchContent: this.searchContent
-      // }).then((res) => {
-      //   if (res.status === 200) {
-      //     this.$router.push('searchResult')
-      //     localStorage.setItem('searchResult', JSON.stringify(res.resultInfo))
-      //   }
-      // })
-
-      // 测试搜索
-      this.$router.push('searchResult')
-      localStorage.setItem('searchResult', JSON.stringify(this.resultInfo))
+    ...mapMutations(['SEARCH']),
+    ...mapMutations(['RESULT']),
+    _search () {
+      // event.$emit('keyword', this.searchContent)
+      // console.log('发送' + this.searchContent)
+      sessionStorage.setItem('keyword', this.searchContent)
+      goSearchResult()
     },
     handleSelect (key, keyPath) {
       // console.log(key, keyPath)
     },
     querySearchAsync (queryString, cb) {
-      var restaurants = this.movies
-      var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants
-
-      clearTimeout(this.timeout)
-      this.timeout = setTimeout(() => {
+      getAllMovieName().then((res) => {
+        for (let i = 0; i < res.data.length; i++) {
+          this.movies[i] = {value: res.data[i].name}
+        }
+        var results = queryString ? this.movies.filter(this.createStateFilter(queryString)) : this.movies
         cb(results)
-      }, 3000 * Math.random())
+      })
     },
     createStateFilter (queryString) {
       return (state) => {
@@ -96,12 +73,14 @@ export default {
     handleSelect2 (item) {
       // console.log(item)
     },
+    handleClear () {
+      console.log(1)
+      this.searchContent = ''
+    },
     _getAllMovieName () {
       getAllMovieName().then((res) => {
-        // console.log(res.allMovieName)
-        this.movies = res.allMovieName
+        this.movies = res.data
       })
-      // this.restaurants = this.loadAll()
     }
   },
   computed: {

@@ -2,9 +2,9 @@
   <div class="review-content">
     <div class="review-top">
       <div class="top-title">Look-So的热门影评</div>
-      <el-radio-group v-model="currentType" @change="changeType">
-      <el-radio label="欢迎">最受欢迎的</el-radio>
-      <el-radio label="最新">最新影评</el-radio>
+      <el-radio-group v-model="type" @change="changeType">
+      <el-radio label='0'>最受欢迎的</el-radio>
+      <el-radio label='1'>最新影评</el-radio>
       </el-radio-group>
     </div>
     <div class="review-center" v-loading="isLoading">
@@ -13,8 +13,8 @@
     <div class="review-footer">
       <el-pagination
         background
-        layout="prev, pager, next"
-        :page-size="pageSize"
+        layout="total, prev, pager, next"
+        :page-size="10"
         :total="number"
         :current-page="currentPage"
         @current-change="currentChange">
@@ -25,39 +25,50 @@
 
 <script>
 import ReviewSlot from '@/components/reviewSlot'
-import {getAllReviews} from '@/js/api'
+import {getAllReviews, baseUrl} from '@/js/api'
+import {userFliter} from '@/js/common'
 export default {
   components: {
     ReviewSlot
   },
   data () {
     return {
-      currentType: '欢迎',
+      type: '0',
       reviews: [],
       currentPage: 1,
-      pageSize: 10,
       number: 0,
       isLoading: true
     }
   },
   created () {
-    this._getAllReview()
+    this._getAllReview(0, 1)
   },
   methods: {
     changeType (type) {
-      this.currentType = type
-      this.currentPage = 1
-      this._getAllReview()
+      this.type = type
+      this._getAllReview(type, 1)
     },
     currentChange (page) {
-      this.currentPage = page
-      this._getAllReview()
+      this._getAllReview(this.type, page)
     },
-    _getAllReview () {
+    _getAllReview (type, page) {
       this.isLoading = true
-      getAllReviews(this.currentType, this.currentPage).then((res) => {
-        this.reviews = res.allReviews
-        this.number = res.number
+      getAllReviews(type, page).then((res) => {
+        for (let i = 0; i < res.data.list.length; i++) {
+          this.reviews[i] = {
+            id: res.data.list[i].movie.id,
+            cover: baseUrl + res.data.list[i].movie.cover,
+            name: res.data.list[i].movie.name,
+            head: res.data.list[i].user.head,
+            user: res.data.list[i].user.nickname,
+            score: res.data.list[i].score,
+            time: res.data.list[i].time,
+            level: res.data.list[i].user.level,
+            content: res.data.list[i].content
+          }
+        }
+        this.reviews = userFliter(this.reviews)
+        this.number = res.data.num
         this.isLoading = false
         // console.log(1)
       })

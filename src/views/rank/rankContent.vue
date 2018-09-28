@@ -6,16 +6,16 @@
               <div class="item-left">
                 <div class="num">{{index+1}}</div>
                 <div class="cover-wrap">
-                    <img class="cover" :src="rank.movieCover" alt="" @click="_goMovieDetail(rank.movieId)">
+                    <img class="cover" :src="rank.cover" alt="" @click="_goMovieDetail(rank.id)">
                 </div>
               </div>
               <div class="item-center">
-                <div class="name" @click="_goMovieDetail(rank.movieId)">{{rank.movieName}}</div>
-                <div class="director">导演：{{rank.movieDir}}</div>
-                <div class="actors">主演：{{rank.movieAct}}</div>
-                <div class="show">上映日期：{{rank.movieShow}}</div>
+                <div class="name" @click="_goMovieDetail(rank.movieId)">{{rank.name}}</div>
+                <div class="director">导演：{{rank.dir}}</div>
+                <div class="actors">主演：{{rank.act}}</div>
+                <div class="show">上映日期：{{rank.show}}</div>
               </div>
-              <div class="item-right">{{rank.reviewScore}}</div>
+              <div class="item-right">{{rank.grade}}</div>
           </div>
       </div>
       <div class="rank-footer">
@@ -34,6 +34,7 @@
 <script>
 import {getAllRank} from '@/js/api'
 import {goMovieDetail} from '@/js/router'
+import {sliderFliter} from '@/js/common'
 export default {
   data () {
     return {
@@ -60,8 +61,8 @@ export default {
       this.isLoading = true
       getAllRank(this.currentPage).then((res) => {
         // console.log(res)
-        this.ranks = res.allRank
-        this.number = res.number
+        this.ranks = sliderFliter(res.data)
+        this.number = res.data.length
         this.isLoading = false
       })
     }
@@ -123,6 +124,7 @@ export default {
                 }
             }
             .item-center {
+                width: 60%;
                 .name {
                     .all-font(Microsoft YaHei, 14px, #494949, 0);
                     cursor: pointer;

@@ -1,8 +1,12 @@
 <template>
-  <div class="movie-detail">
+  <div class="movie-detail" v-loading="isLoading">
     <div class="detail-left">
-      <movie-info :movieInfo="movieInfo" class="movie-info"></movie-info>
-      <write-review class="write-review"></write-review>
+      <movie-info class="movie-info" :movieInfo="movieInfo" ></movie-info>
+      <write-review class="write-review"  @isWrite="updateReview"></write-review>
+      <movie-review class="movie-review"  :movieId="movieId"  ref="movieReview"></movie-review>
+    </div>
+    <div class="detail-right">
+      <movie-map :movieName="movieName" :movieShow="movieShow"></movie-map>
     </div>
   </div>
 </template>
@@ -11,15 +15,24 @@
 import {getMovieDetail} from '@/js/api'
 import MovieInfo from './movieDetail/movieInfo'
 import WriteReview from './movieDetail/writeReview'
+import MovieReview from './movieDetail/movieReview'
+import MovieMap from './movieDetail/movieMap'
+import {detailFliter} from '@/js/common'
 export default {
   components: {
     MovieInfo,
-    WriteReview
+    WriteReview,
+    MovieReview,
+    MovieMap
   },
   data () {
     return {
       movieInfo: {},
-      hotReviews: []
+      hotReviews: [],
+      allReviews: [],
+      isLoading: true,
+      movieName: '',
+      movieShow: ''
     }
   },
   created () {
@@ -27,20 +40,30 @@ export default {
   },
   methods: {
     _getMovieDetail () {
-      getMovieDetail(this.movieId).then((res) => {
-        this.movieInfo = res.movieInfo
-        this.hotReviews = res.hotReviews
-        this.allReviews = res.allReviews
+      getMovieDetail(sessionStorage.getItem('movieId')).then((res) => {
+        this.movieInfo = detailFliter(res.data[0])
+        // this.hotReviews = res.hotReviews
+        this.isLoading = false
       })
+    },
+    updateReview (val) {
+      this.$refs.movieReview._getMovieAllReviews()
     }
   },
   computed: {
     movieId () {
-      return JSON.parse(localStorage.getItem('currentMovie'))
+      // console.log(this.$route.params.movieId)
+      return this.$route.params.movieId
     },
     score: {
       get: function () { return this.movieInfo.reviewScore / 2 },
       set: function () {}
+    }
+  },
+  watch: {
+    movieInfo (val) {
+      this.movieName = val.name
+      this.movieShow = val.show
     }
   }
 }
@@ -48,11 +71,16 @@ export default {
 </script>
 <style lang="less" scoped>
 .movie-detail {
+  display: flex;
   .detail-left {
     width: 70%;
-    .write-review {
+    .write-review, .movie-review {
       margin-top: 20px;
     }
+  }
+  .detail-right {
+    margin-left: 50px;
+    width: 30%;
   }
 }
 </style>

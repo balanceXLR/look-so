@@ -9,16 +9,17 @@
       <div class="movie-content" v-loading="isLoading">
         <movie-slot class="movie-info" v-for="(info,index) in movies" :key="index">
           <div class="cover-wrap">
-              <img class="movie-cover" :src="info.movieCover" alt="" @click="_goMovieDetail(info.movieId)">
+              <img class="movie-cover" :src="info.movie.cover" alt="" @click="_goMovieDetail(info.movie.id)">
           </div>
-          <span class="movie-name" @click="_goMovieDetail(info.movieId)">{{info.movieName}}</span>
-          <span class="movie-score">{{info.reviewScore}}</span>
+          <span class="movie-name" @click="_goMovieDetail(info.movie.id)">{{info.movie.name.length > 8 ? info.movie.name.substring(0,7) + '...' : info.movie.name}}</span>
+          <span class="movie-score">{{ info.grade === 0 ? '暂无评分' : info.grade}}</span>
         </movie-slot>
+        <no-result v-show="isShow"></no-result>
       </div>
       <div class="movie-footer">
         <el-pagination
           background
-          layout="prev, pager, next"
+          layout="total, prev, pager, next"
           :page-size="pageSize"
           :total="number"
           :current-page="currentPage"
@@ -32,10 +33,13 @@
 import MovieSlot from '@/components/movieSlot'
 import {getSortMovies} from '@/js/api'
 import {goMovieDetail} from '@/js/router'
+import { movieFliter } from '@/js/common'
 import bus from '@/js/bus'
+import NoResult from '@/components/noResult'
 export default {
   components: {
-    MovieSlot
+    MovieSlot,
+    NoResult
   },
   data () {
     return {
@@ -45,7 +49,8 @@ export default {
       currentPage: 1,
       number: 0,
       pageSize: 20,
-      isLoading: true
+      isLoading: true,
+      isShow: false
     }
   },
   created () {
@@ -57,13 +62,13 @@ export default {
   methods: {
     initSort () {
       bus.$on('sort', (res) => {
-        // console.log(res)
         this.currentSort = res
         this.currentPage = 1
         this._getSortMovies()
       })
     },
     sorting (label) {
+      console.log(111)
       if (label === '时间') {
         this.showSorting()
       } else {
@@ -74,8 +79,8 @@ export default {
       let arr = this.movies
       for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr.length - 1; j++) {
-          let date1 = new Date(arr[j].movieShow)
-          let date2 = new Date(arr[j + 1].movieShow)
+          let date1 = new Date(arr[j].movie.show)
+          let date2 = new Date(arr[j + 1].movie.show)
           if (date1.getTime() < date2.getTime()) {
             let temp = arr[j]
             arr[j] = arr[j + 1]
@@ -91,7 +96,7 @@ export default {
       let arr = this.movies
       for (let i = 0; i < arr.length; i++) {
         for (let j = 0; j < arr.length - 1; j++) {
-          if (arr[j].reviewScore < arr[j + 1].reviewScore) {
+          if (arr[j].grade < arr[j + 1].grade) {
             let temp = arr[j]
             arr[j] = arr[j + 1]
             arr[j + 1] = temp
@@ -107,15 +112,23 @@ export default {
       this._getSortMovies()
     },
     _getSortMovies () {
-      // console.log(this.currentSort)
-      // console.log(this.currentPage)
       this.isLoading = true
       getSortMovies(this.currentSort, this.currentPage).then((res) => {
-        this.movies = res.sortMovies
-        this.number = res.number
-        this.showSorting()
+        if (res.data) {
+          this.movies = movieFliter(res.data.list)
+          for (let i = 0; i < this.movies.length; i++) {
+            if (this.movies[i].grade === 'NaN') {
+              this.movies[i].grade = 0
+            }
+          }
+          this.number = res.data.num
+          this.showSorting()
+        } else {
+          this.movies = []
+          this.number = 0
+          this.isShow = true
+        }
         this.isLoading = false
-        // console.log(this.number)
       })
     },
     _goMovieDetail (movieId) {
@@ -136,7 +149,7 @@ export default {
   .movie-content {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    // justify-content: space-around;
     margin-top: 12px;
     .movie-info {
       margin: 0 30px 12px 0;
