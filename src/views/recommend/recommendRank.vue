@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import {getRecommendRank} from '@/js/api'
+import {getAllRank} from '@/js/api'
 import {goMovieDetail, goRank} from '@/js/router'
 export default {
   data () {
@@ -33,8 +33,8 @@ export default {
       goMovieDetail(movieId)
     },
     _getRecommendRank () {
-      getRecommendRank().then((res) => {
-        this.rankItems = res.data
+      getAllRank(1).then((res) => {
+        this.rankItems = res.data.slice(0,10)
         this.isLoading = false
       })
     }

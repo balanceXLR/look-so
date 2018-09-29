@@ -37,7 +37,7 @@
         width="80"
       >
       <template  slot-scope="scope">
-        <el-button type="text" size="small" @click="_manageReview(scope.row.reviewId)">删除</el-button>
+        <el-button type="text" size="small" @click="open2(scope.row.id)">删除</el-button>
       </template>
       </el-table-column>
     </el-table>
@@ -74,15 +74,32 @@ export default {
       this.currentPage = page
       this._getAllReviews()
     },
+    open2(id) {
+        this.$confirm('此操作将永久删除该影评, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this._manageReview(id)
+          
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })          
+        })
+      },
     _getAllReviews () {
       getAllReviews(0, this.currentPage).then(res => {
+        this.reviews = []
         for (let item of res.data.list) {
           this.reviews.push({
             userName: item.user.name,
             nick: item.user.nick,
             movieName: item.movie.name,
             time: item.time,
-            content: item.content
+            content: item.content,
+            id: item.id
           })
         }
         this.number = res.data.num
@@ -90,8 +107,10 @@ export default {
       })
     },
     _manageReview (reviewId) {
+      console.log(reviewId)
       manageReview(reviewId).then(res => {
         this.$message.success('删除成功')
+        this._getAllReviews()
       })
     }
   }

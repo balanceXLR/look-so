@@ -1,7 +1,7 @@
 <template>
   <div class="movie-detail" v-loading="isLoading">
     <div class="detail-left">
-      <movie-info class="movie-info" :movieInfo="movieInfo" ></movie-info>
+      <movie-info class="movie-info" :movieInfo="movieInfo" ref="movieInfo"></movie-info>
       <write-review class="write-review"  @isWrite="updateReview"></write-review>
       <movie-review class="movie-review"  :movieId="movieId"  ref="movieReview"></movie-review>
     </div>
@@ -48,6 +48,7 @@ export default {
     },
     updateReview (val) {
       this.$refs.movieReview._getMovieAllReviews()
+      this.$refs.movieInfo._getMovieScore()
     }
   },
   computed: {
@@ -62,6 +63,7 @@ export default {
   },
   watch: {
     movieInfo (val) {
+      console.log(val)
       this.movieName = val.name
       this.movieShow = val.show
     }

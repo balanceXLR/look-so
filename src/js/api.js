@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import { Message } from 'element-ui'
 // 用户登录
-export const baseUrl = 'http://192.168.1.100:8080/lookso'
+export const baseUrl = 'http://192.168.1.104:8080/lookso'
 // const config = {
 //   headers: {
 //     'Access-Control-Allow-Origin': '*',
@@ -253,15 +253,10 @@ export function manageMovie2 (movieId) {
   })
 }
 // 管理员删除影评
-export function manageReview (movieId) {
-  return axios.post('/admin/manageReview').then(res => {
-    if (res.status === 200) {
-      return Promise.resolve('删除成功')
-    } else {
-      Message({
-        type: 'warning',
-        text: '删除失败'
-      })
-    }
+export function manageReview (reviewId) {
+  return axios.post('/manager/delete_review.json?' + qs.stringify({
+    id: reviewId
+  })).then(res => {
+      return Promise.resolve(res.data)
   })
 }

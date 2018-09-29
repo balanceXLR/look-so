@@ -122,7 +122,6 @@ export default {
         return baseUrl + this.user.userHead
       },
       set () {
-        console.log(1)
       }
     },
     userLevel () {

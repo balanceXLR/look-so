@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     _getUserReview () {
-      getUserReview(this.user.userId, 1).then(res => {
+      getUserReview(this.user.userId, 0).then(res => {
         // console.log(res.userReview)
         if(res.code === '0000') {
           for (let i = 0; i < res.data.length; i++) {

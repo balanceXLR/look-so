@@ -87,7 +87,6 @@ export function userFliter (arr) {
 }
 export function detailFliter (obj) {
   if (obj.hasOwnProperty('cover')) {
-    console.log(1)
     obj.cover = baseUrl + obj.cover
   }
   return obj

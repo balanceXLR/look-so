@@ -5,6 +5,7 @@
       class="avatar-uploader"
       action=""
       :auto-upload="false"
+      :before-upload="beforeAvatarUpload"
       :on-change="OnChange"
       :on-remove="OnRemove"
       :on-preview="handlePictureCardPreview"
@@ -130,6 +131,19 @@ export default {
     },
     beforeRemove (file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    beforeAvatarUpload (file) {
+      const isJPG = file.type === 'image/jpeg'
+      const isPNG = file.type === 'image/png'
+      const isLt2M = file.size / 1024 / 1024 < 2
+
+      if (!isJPG && !isPNG) {
+        this.$message.error('上传头像图片只能是 JPG,PNG 格式!')
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isJPG && isLt2M
     },
     OnChange (file, fileList) {
       this.imageUrl = URL.createObjectURL(file.raw)

@@ -53,8 +53,8 @@
         width="80"
       >
       <template  slot-scope="scope">
-        <el-button type="text" size="small" v-show="scope.row.status === 0" @click="_manageMovie(scope.row.id, scope.row.status)">下架</el-button>
-        <el-button type="text" size="small" v-show="scope.row.status === 1" class="recover-btn" @click="_manageMovie(scope.row.id, scope.row.status)">上架</el-button>
+        <el-button type="text" size="small" v-show="scope.row.status === 0" @click="open2(scope.row.id, scope.row.status)">下架</el-button>
+        <el-button type="text" size="small" v-show="scope.row.status === 1" class="recover-btn" @click="open2(scope.row.id, scope.row.status)">上架</el-button>
       </template>
       </el-table-column>
     </el-table>
@@ -92,6 +92,21 @@ export default {
       this.currentPage = page
       this._getAdminMovie()
     },
+    open2(id, status) {
+        let confirm = status === 0 ? '下架' : '上架'
+        this.$confirm(`确认要${confirm}该电影吗`, '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this._manageMovie(id,status)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+      },
     _getAdminMovie () {
       getAdminMovie(this.currentPage).then(res => {
         this.movies = sliderFliter(res.data.list)

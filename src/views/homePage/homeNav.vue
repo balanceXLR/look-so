@@ -74,7 +74,6 @@ export default {
       // console.log(item)
     },
     handleClear () {
-      console.log(1)
       this.searchContent = ''
     },
     _getAllMovieName () {

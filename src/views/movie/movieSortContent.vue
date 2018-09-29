@@ -68,7 +68,6 @@ export default {
       })
     },
     sorting (label) {
-      console.log(111)
       if (label === '时间') {
         this.showSorting()
       } else {
@@ -115,6 +114,7 @@ export default {
       this.isLoading = true
       getSortMovies(this.currentSort, this.currentPage).then((res) => {
         if (res.data) {
+          // this.movies = []
           this.movies = movieFliter(res.data.list)
           for (let i = 0; i < this.movies.length; i++) {
             if (this.movies[i].grade === 'NaN') {

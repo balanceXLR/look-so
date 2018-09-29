@@ -12,7 +12,9 @@ export default {
   data () {
     return {
       location: [],
-      map: {}
+      map: {},
+      name: '',
+      show: ''
     }
   },
   props: {
@@ -31,9 +33,9 @@ export default {
   },
   mounted () {
     this.createMap()
-    this.init().then((res) => {
-      this.search(res)
-    })
+    // this.init().then((res) => {
+    //   this.search(res)
+    // })
   },
   methods: {
     createMap () {
@@ -86,8 +88,7 @@ export default {
         // 关键字查询
         // placeSearch.search('电影院')
         // 查找周边
-        console.log('name' + that.movieName)
-        let _date = that.movieShow.replace(/-+/g, '')
+        let _date = that.show.replace(/-+/g, '')
         let _name = ''
         if (_date < 20180820) {
           _name = '搜不出来的'
@@ -96,6 +97,18 @@ export default {
 
         })
       })
+    }
+  },
+  watch: {
+    movieName(val) {
+      console.log(val)
+      this.name = val
+      this.init().then((res) => {
+      this.search(res)
+    })
+    },
+    movieShow(val) {
+      this.show = val
     }
   }
 }

@@ -10,7 +10,7 @@
                 </div>
               </div>
               <div class="item-center">
-                <div class="name" @click="_goMovieDetail(rank.movieId)">{{rank.name}}</div>
+                <div class="name" @click="_goMovieDetail(rank.id)">{{rank.name}}</div>
                 <div class="director">导演：{{rank.dir}}</div>
                 <div class="actors">主演：{{rank.act}}</div>
                 <div class="show">上映日期：{{rank.show}}</div>
@@ -18,7 +18,7 @@
               <div class="item-right">{{rank.grade}}</div>
           </div>
       </div>
-      <div class="rank-footer">
+      <!-- <div class="rank-footer">
         <el-pagination
             background
             layout="prev, pager, next"
@@ -27,7 +27,7 @@
             :current-page="currentPage"
             @current-change="currentChange">
         </el-pagination>
-      </div>
+      </div> -->
   </div>
 </template>
 

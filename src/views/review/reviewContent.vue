@@ -54,6 +54,7 @@ export default {
     _getAllReview (type, page) {
       this.isLoading = true
       getAllReviews(type, page).then((res) => {
+        this.reviews = []
         for (let i = 0; i < res.data.list.length; i++) {
           this.reviews[i] = {
             id: res.data.list[i].movie.id,
@@ -70,7 +71,6 @@ export default {
         this.reviews = userFliter(this.reviews)
         this.number = res.data.num
         this.isLoading = false
-        // console.log(1)
       })
     }
   }
